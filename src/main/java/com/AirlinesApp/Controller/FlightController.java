@@ -44,7 +44,7 @@ public class FlightController{
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<FlightDto> getFlights(){
-        List<Flight> flights = flightService.getAllFlights();
+        List<Flight> flights = repository.getAllFlights();
         return flights.stream().map(FlightTransformer::convertToDto).collect(Collectors.toList());
     }
 

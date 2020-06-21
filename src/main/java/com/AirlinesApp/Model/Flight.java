@@ -1,5 +1,7 @@
 package com.AirlinesApp.Model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -9,30 +11,38 @@ public class Flight {
     @Id
     @Column(name = "id", nullable = false, unique = true)
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Getter
     private Integer id;
 
     @Column(name = "priceEconomic", nullable = true)
+    @Getter
     private Long priceEconomic;
 
     @Column(name = "startDate")
+    @Getter
     private Date startDate;
 
     @Column(name = "endDate")
+    @Getter
     private Date endDate;
 
     @Column(name = "priceBuisness", nullable = true)
+    @Getter
     private Long priceBuisness;
 
     @ManyToOne
     @JoinColumn(name = "startAPID", referencedColumnName = "id")
+    @Getter
     private Airport sAPID;
 
     @ManyToOne
     @JoinColumn(name = "endAPID", referencedColumnName = "id")
+    @Getter
     private Airport dAPID;
 
     @ManyToOne
     @JoinColumn(name = "planeID", referencedColumnName = "id")
+    @Getter
     private Plane planeID;
 
     public Flight(){}
