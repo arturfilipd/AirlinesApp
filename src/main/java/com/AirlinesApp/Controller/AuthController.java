@@ -1,13 +1,11 @@
 package com.AirlinesApp.Controller;
 
-import com.AirlinesApp.Model.ERole;
-import com.AirlinesApp.Model.Person;
-import com.AirlinesApp.Model.Role;
-import com.AirlinesApp.Model.User;
+import com.AirlinesApp.Model.*;
 import com.AirlinesApp.Payload.Request.LoginRequest;
 import com.AirlinesApp.Payload.Request.SignupRequest;
 import com.AirlinesApp.Payload.Response.JwtResponse;
 import com.AirlinesApp.Payload.Response.MessageResponse;
+import com.AirlinesApp.Repository.ClientRepository;
 import com.AirlinesApp.Repository.PersonRepository;
 import com.AirlinesApp.Repository.RoleRepository;
 import com.AirlinesApp.Repository.UserRepository;
@@ -52,6 +50,9 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    ClientRepository clients;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -93,6 +94,7 @@ public class AuthController {
                 encoder.encode(signUpRequest.getPassword()));
 
         Person person = new Person(signUpRequest.name, signUpRequest.surname, signUpRequest.personalID, signUpRequest.phoneNumber);
+
         people.save(person);
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -127,6 +129,9 @@ public class AuthController {
         user.setRoles(roles);
         user.setPersonID(person);
         userRepository.save(user);
+        Client client = new Client();
+        client.setUserId(user);
+        clients.save(client);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

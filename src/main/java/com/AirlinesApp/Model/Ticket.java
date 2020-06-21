@@ -22,4 +22,20 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "clientID", referencedColumnName = "id")
     private Client clientID;
+
+    @ManyToOne
+    @JoinColumn(name ="flightID", referencedColumnName = "id")
+    private Flight flightID;
+
+    public Ticket(){}
+
+    public Ticket(String className, Client clientID, Flight flightID){
+        this.className = className;
+        this.clientID = clientID;
+        this.flightID = flightID;
+        if(className == "economic")
+            this.price = flightID.getPriceEconomic();
+        else
+            this.price = flightID.getPriceBuisness();
+    }
 }

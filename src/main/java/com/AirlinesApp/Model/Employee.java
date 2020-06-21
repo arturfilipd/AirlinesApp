@@ -1,6 +1,5 @@
 package com.AirlinesApp.Model;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -39,4 +38,6 @@ public class Employee {
         this.hiringDate = hiringDate;
         this.position = position;
     }
+
+    public Employee(){}
 }
