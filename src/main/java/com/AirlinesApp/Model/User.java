@@ -36,6 +36,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "personID", referencedColumnName = "id")
+    private Person personID;
+
     public User() {
     }
 
@@ -44,6 +48,8 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+    public void setPersonID(Person p) {personID = p;}
 
     public Long getId() {
         return id;

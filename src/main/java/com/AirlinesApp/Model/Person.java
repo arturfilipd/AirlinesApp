@@ -31,4 +31,13 @@ public class Person {
         return id;
     }
 
+    public Person(){}
+
+    public Person(String name, String surname, String personalID, String phoneNumber){
+        this.name = name;
+        this.surname = surname;
+        this.personalID = personalID;
+        this.phoneNumber = phoneNumber;
+    }
+
 }

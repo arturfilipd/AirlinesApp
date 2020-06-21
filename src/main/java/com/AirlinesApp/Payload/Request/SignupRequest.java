@@ -21,6 +21,11 @@ public class SignupRequest {
     @Size(min = 6, max = 40)
     private String password;
 
+    public String name;
+    public String surname;
+    public String personalID;
+    public String phoneNumber;
+
     public String getUsername() {
         return username;
     }
