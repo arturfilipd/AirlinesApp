@@ -1,6 +1,7 @@
 package com.AirlinesApp.Model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "Flights")
@@ -11,6 +12,12 @@ public class Flight {
 
     @Column(name = "priceEconomic", nullable = true)
     private Long priceEconomic;
+
+    @Column(name = "startDate")
+    private Date startDate;
+
+    @Column(name = "endDate")
+    private Date endDate;
 
     @Column(name = "priceBuisness", nullable = true)
     private Long priceBuisness;
@@ -27,5 +34,15 @@ public class Flight {
     @JoinColumn(name = "planeID", referencedColumnName = "id")
     private Plane planeID;
 
+    public Flight(){}
+
+    public Flight(Date starts, Date ends, Airport source, Airport destination, Long eco, Long buis){
+        this.startDate = starts;
+        this.endDate = ends;
+        this.dAPID = destination;
+        this.sAPID = source;
+        this.priceEconomic = eco;
+        this.priceBuisness = buis;
+    }
 
 }
