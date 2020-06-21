@@ -1,4 +1,4 @@
-package com.AirlinesApp.Payload.Request;
+package com.AirlinesApp.Payload.Request.Flights;
 
 
 import org.springframework.format.annotation.DateTimeFormat;
