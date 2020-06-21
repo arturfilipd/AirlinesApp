@@ -1,5 +1,6 @@
 package com.AirlinesApp.Model;
 
+import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 public class Employee {
     @Id
     @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @ManyToOne
@@ -30,4 +32,11 @@ public class Employee {
     @Column(name = "position", nullable = false)
     @NotNull(message = "Position cannot be empty.")
     private String position;
+
+    public Employee(Person person, Long salary, Date hiringDate, String position){
+        this.personID = person;
+        this.salary = salary;
+        this.hiringDate = hiringDate;
+        this.position = position;
+    }
 }

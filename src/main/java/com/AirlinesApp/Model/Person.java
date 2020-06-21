@@ -27,10 +27,6 @@ public class Person {
     @NotNull(message = "phoneNumber cannot be empty.")
     private String phoneNumber;
 
-    public int getID(){
-        return id;
-    }
-
     public Person(){}
 
     public Person(String name, String surname, String personalID, String phoneNumber){
