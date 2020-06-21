@@ -13,17 +13,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/ticket")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
     @Autowired TicketRepository repository;
@@ -31,16 +30,17 @@ public class TicketController {
     @Autowired ClientRepository clients;
     @Autowired FlightRepository flights;
 
-    @GetMapping("/tickets")
+    @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<TicketDto> getTickets(){
         List<Ticket> tickets = repository.getAllTickets();
         return tickets.stream().map(TicketTransformer::convertToDto).collect(Collectors.toList());
     }
 
-    @RequestMapping("/add")
-    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/add")
     public ResponseEntity<?> newTicket(@Valid @RequestBody AddTicketRequest req){
+        System.out.println("AAAAAAAAAAAAAAAAAAAAA!");
+        System.out.println("UID = " +req.userId + " FID = " + req.flightId + " class = " + req.ticketClass);
       if(!users.existsById(req.userId)){
           return ResponseEntity
                   .badRequest()
