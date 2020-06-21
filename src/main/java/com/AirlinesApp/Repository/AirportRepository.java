@@ -12,4 +12,5 @@ import java.util.List;
 public interface AirportRepository extends JpaRepository<Airport, Integer> {
     @Query(value = "Select * from Airports", nativeQuery = true)
     List<Airport> getAllAirports();
+    Boolean existsByCode(String code);
 }

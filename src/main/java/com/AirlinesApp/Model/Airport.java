@@ -15,13 +15,20 @@ public class Airport {
     @NotNull(message = "Airport name cannot be null")
     private String airportName;
 
-    @Column(name = "cityCode", nullable = false)
-    @NotNull(message = "City code cannot be null")
-    private String cityCode;
+    @Column(name = "code", nullable = false)
+    @NotNull(message = "Code cannot be null")
+    private String code;
 
     @Column(name = "cityName", nullable = false)
     @NotNull(message = "City name cannot be null")
     private String cityName;
 
+    public Airport (String name, String code, String cityName){
+        this.airportName = name;
+        this.code = code;
+        this.cityName = cityName;
+    }
+
+    public Airport (){};
 
 }
