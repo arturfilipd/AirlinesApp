@@ -10,6 +10,7 @@ public class AddFlightRequest {
     @NotBlank
     @DateTimeFormat
     public Date starts;
+
     @NotBlank
     @DateTimeFormat
     public Date ends;
@@ -18,6 +19,9 @@ public class AddFlightRequest {
     public Integer destID;
     @NotBlank
     public Integer sourceID;
+
+    @NotBlank
+    public Integer planeID;
 
     @NotBlank
     public Long priceEco;

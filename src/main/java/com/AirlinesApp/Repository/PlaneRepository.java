@@ -11,5 +11,6 @@ import java.util.List;
 public interface PlaneRepository extends JpaRepository<Plane, Integer> {
     @Query(value = "Select * from Planes", nativeQuery = true)
     List<Plane> getAllPlanes();
+    Plane findOneById(Integer id);
 
 }
