@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Klasa kontrolera klientów, mapowanego pod adresem "/api/clients/".
+ * Klasa kontrolera klientów, mapowanego pod adresem "/api/clients".
  */
 @CrossOrigin
 @RestController

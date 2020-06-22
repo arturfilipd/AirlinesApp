@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Kontroler Samolotów, mapowany na adres "/api/planes".
+ * Klasa kontrolera Samolotów, mapowanego pod adresem "/api/planes".
  */
 @CrossOrigin
 @RestController
@@ -68,7 +68,7 @@ public class PlaneController{
      *            Integer businessSeats - liczba miejsc w klasie biznesowej
      *            Integer ecoSeats - liczba miejsc w klasie ekonomicznej
      *            String name - nazwa samolotu
-     * @return
+     * @return Odpowiedź informująca o rezultacie działania.
      */
     @PostMapping("/add")
     @PreAuthorize("hasRole('EMPLOYEE')")

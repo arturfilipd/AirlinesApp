@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Kontroler Biletów \
+ * Klasa kontrolera biletów, mapowanego pod adresem "/api/tickets".
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

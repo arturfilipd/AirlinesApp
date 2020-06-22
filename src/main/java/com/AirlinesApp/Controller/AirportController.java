@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * Klasa kontrolera Lotnisk, mapowanego pod adresem "/api/airports".
+ * Klasa kontrolera lotnisk, mapowanego pod adresem "/api/airports".
  */
 @CrossOrigin
 @RestController

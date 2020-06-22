@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * Klasa kontrolera pracowników, mapowanego pod adresem "/api/employees/".
+ * Klasa kontrolera pracowników, mapowanego pod adresem "/api/employees".
  */
 @CrossOrigin
 @RestController
@@ -65,7 +65,7 @@ public class EmployeeController {
      *            String personalID - nr PESEL
      *            String phoneNumber - telefon kontaktowy
      *            String eMail - adres e-mail
-     *            Set\<Roles\> - role pracownika, w po przecinku
+     *            Set Roles - role pracownika, po przecinku
      *
      *
      * @return Odpowiedź informująca o rezultacie działania.
