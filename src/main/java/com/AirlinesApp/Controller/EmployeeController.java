@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping()
+@RequestMapping("/api/employees")
 public class EmployeeController {
     @Autowired
     EmployeeRepository repository;
@@ -35,6 +36,8 @@ public class EmployeeController {
     PersonRepository people;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    PasswordEncoder encoder;
     @GetMapping("/employees")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeDto> getEmployees() {
@@ -42,8 +45,8 @@ public class EmployeeController {
         return employees.stream().map(EmployeeTransformer::convertToDto).collect(Collectors.toList());
     }
 
-    @PostMapping("/addEmployee")
-    @PreAuthorize("hasRole('Manager')")
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?>addEmployee(@Valid @RequestBody AddEmployeeRequest req){
         if(users.existsByEmail(req.eMail)){
             return ResponseEntity
@@ -56,7 +59,6 @@ public class EmployeeController {
         for(int i=0;i<8;i++){
             pass+=alphabet.charAt(rand.nextInt(alphabet.length()));
         }
-
         Set<String> strRoles = req.role;
         Set<Role> roles = new HashSet<>();
 
@@ -88,15 +90,15 @@ public class EmployeeController {
         }
         Person p = people.save(new Person(req.name, req.surname, req.personalID, req.phoneNumber));
         repository.save(new Employee(p, req.salary, new Date(), req.position));
-        User user = new User(req.eMail, req.eMail, pass);
+        User user = new User(req.eMail, req.eMail, encoder.encode(pass));
         user.setPersonID(p);
         user.setRoles(roles);
         users.save(user);
         return ResponseEntity.ok(new MessageResponse("Employee added successfully!"));
     }
 
-    @PostMapping("/fireEmployee")
-    @PreAuthorize("hasRole('Manager')")
+    @PostMapping("/fire")
+    @PreAuthorize("hasRole('MANAGER')")
     @Transactional
     public ResponseEntity<?>fireEmployee(@Valid @RequestBody FireEmployeeRequest req){
         if(!repository.existsById(req.id)){

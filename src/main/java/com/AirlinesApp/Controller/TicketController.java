@@ -36,11 +36,11 @@ public class TicketController {
         List<Ticket> tickets = repository.getAllTickets();
         return tickets.stream().map(TicketTransformer::convertToDto).collect(Collectors.toList());
     }
-
+    
     @PostMapping("/add")
     public ResponseEntity<?> newTicket(@Valid @RequestBody AddTicketRequest req){
-        System.out.println("AAAAAAAAAAAAAAAAAAAAA!");
-        System.out.println("UID = " +req.userId + " FID = " + req.flightId + " class = " + req.ticketClass);
+        //System.out.println("AAAAAAAAAAAAAAAAAAAAA!");
+        System.out.println("UID = " +req.userId + " FID = " + req.flightId + " class = " + req.ticketClass + "paid = " + req.paid);
       if(!users.existsById(req.userId)){
           return ResponseEntity
                   .badRequest()
@@ -49,7 +49,8 @@ public class TicketController {
 
         repository.save(new Ticket(req.ticketClass,
                 clients.findOneByUserId(users.findOneById(req.userId)),
-                flights.findOneById(req.flightId)));
+                flights.findOneById(req.flightId),
+                req.paid, null));
 
         return ResponseEntity.ok(new MessageResponse("Ticked added successfully!"));
     }
