@@ -122,6 +122,7 @@ public class TicketController {
             ResponseEntity.badRequest().body(new MessageResponse("Error: Ticket does not exist!"));
         }
         repository.update(true, req.seat, req.ticketID);
+        //Generowanie tego barcode klucza jak ci sie będzie chciało//
         return ResponseEntity.ok(new MessageResponse("Ticket checked in successfully"));
     }
 }
