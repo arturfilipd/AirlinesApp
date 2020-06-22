@@ -2,6 +2,7 @@ package com.AirlinesApp.Controller;
 
 import com.AirlinesApp.Model.Ticket;
 import com.AirlinesApp.Payload.Request.Tickets.AddTicketRequest;
+import com.AirlinesApp.Payload.Request.Tickets.DeleteTicketRequest;
 import com.AirlinesApp.Payload.Response.MessageResponse;
 import com.AirlinesApp.Repository.ClientRepository;
 import com.AirlinesApp.Repository.FlightRepository;
@@ -53,5 +54,15 @@ public class TicketController {
                 req.paid, null));
 
         return ResponseEntity.ok(new MessageResponse("Ticked added successfully!"));
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteTicket(@Valid @RequestBody DeleteTicketRequest req){
+        if(!repository.existsById(req.id)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Ticket does not exist!"));
+        }
+        repository.deleteById(req.id);
+        return ResponseEntity.ok(new MessageResponse("Ticket successfully deleted"));
     }
 }
