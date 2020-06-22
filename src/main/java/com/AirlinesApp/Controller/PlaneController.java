@@ -20,6 +20,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Kontroler Samolotów, mapowany na adres "/api/planes".
+ */
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +34,13 @@ public class PlaneController{
     @Autowired
     PlaneRepository repository;
 
+
     private final PlaneService planeService;
+
+    /**
+     * Mapowanie listy samolotów
+     * @return Lista samolotów w formacie DTO.
+     */
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<PlaneDto> getPlanes(){
@@ -39,6 +48,12 @@ public class PlaneController{
         return planes.stream().map(PlaneTransformer::convertToDto).collect(Collectors.toList());
     }
 
+    /**
+     * Mapowanie listy samolotów na danym lotnisku
+     * @param req Ciało zaptania
+     *            Integer airportId - ID lotniska
+     * @return Lista samolotów na danym lotnisku w formacie DTO.
+     */
     @GetMapping("/getByAirport")
     @PreAuthorize("hasRole('EMPLOYEE')")
    public List<PlaneDto> getPlanesAtAirport(@Valid @RequestBody GetPlanesRequest req){
@@ -46,6 +61,15 @@ public class PlaneController{
         return planes.stream().map(PlaneTransformer::convertToDto).collect(Collectors.toList());
     }
 
+    /**
+     * Mapowanie dodawania samolotu
+     * @param req Ciało zapytania
+     *            Integer airportId - ID lotniska
+     *            Integer businessSeats - liczba miejsc w klasie biznesowej
+     *            Integer ecoSeats - liczba miejsc w klasie ekonomicznej
+     *            String name - nazwa samolotu
+     * @return
+     */
     @PostMapping("/add")
     @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> addPlane(@Valid @RequestBody AddPlaneRequest req){
