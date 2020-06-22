@@ -47,6 +47,9 @@ public class AirportController {
     /**
      * Mapowanie adresu dodania lotniska. Wymaga roli pracownika
      * @param req Ciało zapytania
+     *            String name - nazwa lotniska
+     *            String code - kod lotniska (3-5 znaków)
+     *            String city - miasto w którym znajduje sie lotnisko     *
      * @return Odpowiedź informująca o rezultacie działania.
      */
     @PostMapping("/add")

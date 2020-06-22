@@ -23,6 +23,10 @@ import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+/**
+ * Klasa kontrolera pracowników, mapowanego pod adresem "/api/employees/".
+ */
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
@@ -38,13 +42,34 @@ public class EmployeeController {
     RoleRepository roleRepository;
     @Autowired
     PasswordEncoder encoder;
+
+    /**
+     * Mapowanie listy pracownikow
+     * @return Lista pracowaników w formacie DTO.
+     */
     @GetMapping("/employees")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('MANAGER')")
     public List<EmployeeDto> getEmployees() {
         List<Employee> employees = repository.getAllEmployees();
         return employees.stream().map(EmployeeTransformer::convertToDto).collect(Collectors.toList());
     }
 
+    /**
+     * Mapowanie dodawania pracownika
+     * @param req Ciało zapytania
+     *            String position - stanowisko pracownika
+     *            Long salary - pensja
+     *            String name - imię
+     *            String surname - nazwisko
+     *            String personalID - nr PESEL
+     *            String phoneNumber - telefon kontaktowy
+     *            String eMail - adres e-mail
+     *            Set\<Roles\> - role pracownika, w po przecinku
+     *
+     *
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @PostMapping("/add")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?>addEmployee(@Valid @RequestBody AddEmployeeRequest req){
@@ -97,6 +122,12 @@ public class EmployeeController {
         return ResponseEntity.ok(new MessageResponse("Employee added successfully!"));
     }
 
+    /**
+     * Mapowanie zwalniania pracownika
+     * @param req Ciało zapytania
+     *            Integer id - ID pracownika do zwolnienia
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @PostMapping("/fire")
     @PreAuthorize("hasRole('MANAGER')")
     @Transactional

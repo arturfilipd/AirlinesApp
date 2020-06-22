@@ -26,7 +26,7 @@ public class AddFlightRequest {
     @NotBlank
     public Long priceEco;
     @NotBlank
-    public Long priceBuis;
+    public Long priceBusi;
 
 
 

@@ -10,7 +10,6 @@ import com.AirlinesApp.Payload.Response.MessageResponse;
 import com.AirlinesApp.Repository.AirportRepository;
 import com.AirlinesApp.Repository.FlightRepository;
 import com.AirlinesApp.Repository.PlaneRepository;
-import com.AirlinesApp.Service.FlightService;
 import com.AirlinesApp.Transformer.FlightTransformer;
 import com.AirlinesApp.dto.FlightDto;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,10 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * Klasa kontrolera lotów, mapowanego pod adresem "/api/flights/".
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
@@ -40,7 +43,11 @@ public class FlightController{
     @Autowired
     PlaneRepository planes;
 
-    private final FlightService flightService;
+
+    /**
+     * Mapowanie listy lotów
+     * @return Lista lotów w formacie DTO
+     */
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<FlightDto> getFlights(){
@@ -48,6 +55,18 @@ public class FlightController{
         return flights.stream().map(FlightTransformer::convertToDto).collect(Collectors.toList());
     }
 
+    /**
+     * Mapowanie dodawania nowego lotu
+     * @param req Ciało zapytania
+     *      Date starts - data startu lotu
+     *      Date ends - data końca lotu
+     *      Integer sourceID - ID lotniska początkowego
+     *      Integer destID - ID lotniska końcowego
+     *      Integer planeID - ID samolotu
+     *      Long priceEco - cena biletu klasy ekonomicznej
+     *      Long priceBusi - cena biletu klase biznesowej
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @PostMapping("/add")
     @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?>addFlight(@Valid @RequestBody AddFlightRequest req){
@@ -75,10 +94,16 @@ public class FlightController{
         Airport dest = airports.findOneById(req.destID);
         Plane p = planes.findOneById(req.planeID);
 
-        repository.save(new Flight(req.starts, req.ends, src, dest, req.priceEco, req.priceBuis, p));
+        repository.save(new Flight(req.starts, req.ends, src, dest, req.priceEco, req.priceBusi, p));
         return ResponseEntity.ok(new MessageResponse("Flight added successfully!"));
     }
 
+    /**
+     * Mapowanie usuwania lotu
+     * @param req Ciało zapytania
+     *            Integer id - ID lotu
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> deleteFlight(@Valid @RequestBody DeleteRequest req){
@@ -91,6 +116,14 @@ public class FlightController{
         return ResponseEntity.ok(new MessageResponse("Flight removed successfully!"));
     }
 
+    /**
+     * Mapowanie edycji lotu
+     * @param req Ciało zapytania
+     *            Integer id - ID lotu
+     *            Date newStart - nowa data startu lotu
+     *            Date newEnd - nowa data końca lotu
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @PostMapping("/update")
     @Transactional
     @PreAuthorize("hasRole('EMPLOYEE')")
