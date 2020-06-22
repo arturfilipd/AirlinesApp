@@ -35,7 +35,7 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "clientID", referencedColumnName = "id")
-    private Client clientID;
+    @Getter private Client clientID;
 
     @ManyToOne
     @JoinColumn(name ="flightID", referencedColumnName = "id")

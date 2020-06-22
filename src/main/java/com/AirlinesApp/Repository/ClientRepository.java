@@ -13,4 +13,5 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
     @Query(value = "Select * from Clients", nativeQuery = true)
     List<Client> getAllClients();
     Client findOneByUserId(User userId);
+    Client findOneById(Integer id);
 }

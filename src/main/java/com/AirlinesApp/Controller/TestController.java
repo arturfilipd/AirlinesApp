@@ -1,10 +1,8 @@
 package com.AirlinesApp.Controller;
 
+import com.AirlinesApp.Payload.Request.DeleteRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -32,4 +30,11 @@ public class    TestController {
     public String adminAccess() {
         return "Admin Board.";
     }
+
+    @PostMapping("/token")
+    public void tokenTest(@RequestBody DeleteRequest req, @RequestHeader String Authorization){
+        System.out.println("ID = " + req.id);
+        System.out.println("THREAD = " + Authorization);
+    }
+
 }

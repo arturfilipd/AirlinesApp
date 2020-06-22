@@ -11,6 +11,7 @@ import com.AirlinesApp.Repository.ClientRepository;
 import com.AirlinesApp.Repository.FlightRepository;
 import com.AirlinesApp.Repository.TicketRepository;
 import com.AirlinesApp.Repository.UserRepository;
+import com.AirlinesApp.Security.jwt.JwtUtils;
 import com.AirlinesApp.Transformer.TicketTransformer;
 import com.AirlinesApp.dto.TicketDto;
 import lombok.RequiredArgsConstructor;
@@ -38,12 +39,7 @@ public class TicketController {
     @Autowired ClientRepository clients;
     @Autowired FlightRepository flights;
 
-    @GetMapping("/list")
-    @ResponseStatus(HttpStatus.OK)
-    public List<TicketDto> getTickets(){
-        List<Ticket> tickets = repository.getAllTickets();
-        return tickets.stream().map(TicketTransformer::convertToDto).collect(Collectors.toList());
-    }
+    @Autowired private JwtUtils jwtUtils;
 
     /**
      * Mapowanie wyswietlania biletow danego klienta
@@ -74,14 +70,19 @@ public class TicketController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> newTicket(@Valid @RequestBody AddTicketRequest req){
-        //System.out.println("AAAAAAAAAAAAAAAAAAAAA!");
-        System.out.println("UID = " +req.userId + " FID = " + req.flightId + " class = " + req.ticketClass + "paid = " + req.paid);
-      if(!users.existsById(req.userId)){
+    public ResponseEntity<?> newTicket(@Valid @RequestBody AddTicketRequest req, @RequestHeader String Authorization){
+        if(!users.existsById(req.userId)){
           return ResponseEntity
                   .badRequest()
                   .body(new MessageResponse("Error: Invalid user!"));
       }
+
+        String tokenName = jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        if(!tokenName.equals(users.findOneById(req.userId).getUsername())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Invalid user!"));
+        }
 
         repository.save(new Ticket(req.ticketClass,
                 clients.findOneByUserId(users.findOneById(req.userId)),
@@ -98,11 +99,18 @@ public class TicketController {
      * @return Odpowiedź informująca o rezultacie działania.
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteTicket(@Valid @RequestBody DeleteTicketRequest req){
+    public ResponseEntity<?> deleteTicket(@Valid @RequestBody DeleteTicketRequest req, @RequestHeader String Authorization){
         if(!repository.existsById(req.id)){
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Ticket does not exist!"));
+        }
+        String tokenName = jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        String username = clients.findOneById(repository.findOneById(req.id).getClientID().getId()).getUserId().getUsername();
+        if(!tokenName.equals(username)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Invalid user!"));
         }
         repository.deleteById(req.id);
         return ResponseEntity.ok(new MessageResponse("Ticket successfully deleted"));
@@ -125,4 +133,6 @@ public class TicketController {
         //Generowanie tego barcode klucza jak ci sie będzie chciało//
         return ResponseEntity.ok(new MessageResponse("Ticket checked in successfully"));
     }
+
+
 }
