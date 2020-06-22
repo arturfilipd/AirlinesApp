@@ -14,10 +14,6 @@ public class Client {
     @Getter private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "personID", referencedColumnName = "id")
-    @Getter private Person personID;
-
-    @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @Getter @Setter private User userId;
 
