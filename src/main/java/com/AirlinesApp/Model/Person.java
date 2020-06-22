@@ -35,5 +35,7 @@ public class Person {
         this.personalID = personalID;
         this.phoneNumber = phoneNumber;
     }
-
+    /*public int getId(){
+        return id;
+    }*/
 }

@@ -1,4 +1,4 @@
-package com.AirlinesApp.Payload.Request;
+package com.AirlinesApp.Payload.Request.Employees;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Set;

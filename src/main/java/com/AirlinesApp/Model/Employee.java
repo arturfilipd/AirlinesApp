@@ -1,5 +1,6 @@
 package com.AirlinesApp.Model;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -32,12 +33,14 @@ public class Employee {
     @NotNull(message = "Position cannot be empty.")
     private String position;
 
+    public Employee(){}
     public Employee(Person person, Long salary, Date hiringDate, String position){
         this.personID = person;
         this.salary = salary;
         this.hiringDate = hiringDate;
         this.position = position;
     }
-
-    public Employee(){}
+    public Person getPersonID(){
+        return personID;
+    }
 }

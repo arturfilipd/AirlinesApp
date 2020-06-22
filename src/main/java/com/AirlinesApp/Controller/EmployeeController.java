@@ -1,13 +1,13 @@
 package com.AirlinesApp.Controller;
 
 import com.AirlinesApp.Model.*;
-import com.AirlinesApp.Payload.Request.AddEmployeeRequest;
+import com.AirlinesApp.Payload.Request.Employees.AddEmployeeRequest;
+import com.AirlinesApp.Payload.Request.Employees.FireEmployeeRequest;
 import com.AirlinesApp.Payload.Response.MessageResponse;
 import com.AirlinesApp.Repository.EmployeeRepository;
 import com.AirlinesApp.Repository.PersonRepository;
 import com.AirlinesApp.Repository.RoleRepository;
 import com.AirlinesApp.Repository.UserRepository;
-import com.AirlinesApp.Service.EmployeeService;
 import com.AirlinesApp.Transformer.EmployeeTransformer;
 import com.AirlinesApp.dto.EmployeeDto;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/addEmployee")
-    //@PreAuthorize()
+    @PreAuthorize("hasRole('Manager')")
     public ResponseEntity<?>addEmployee(@Valid @RequestBody AddEmployeeRequest req){
         if(users.existsByEmail(req.eMail)){
             return ResponseEntity
@@ -88,8 +89,27 @@ public class EmployeeController {
         Person p = people.save(new Person(req.name, req.surname, req.personalID, req.phoneNumber));
         repository.save(new Employee(p, req.salary, new Date(), req.position));
         User user = new User(req.eMail, req.eMail, pass);
+        user.setPersonID(p);
         user.setRoles(roles);
         users.save(user);
         return ResponseEntity.ok(new MessageResponse("Employee added successfully!"));
+    }
+
+    @PostMapping("/fireEmployee")
+    @PreAuthorize("hasRole('Manager')")
+    @Transactional
+    public ResponseEntity<?>fireEmployee(@Valid @RequestBody FireEmployeeRequest req){
+        if(!repository.existsById(req.id)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: no such Employee!"));
+        }
+        repository.removeEmployee(new Date(), req.id);
+        Employee e = repository.getOne(req.id);
+        Person p = e.getPersonID();
+        User u = users.findOneByPersonID(e.getPersonID());
+        users.delete(u);
+        return ResponseEntity.ok(new MessageResponse("Employee fired successfully!"));
+
     }
 }
