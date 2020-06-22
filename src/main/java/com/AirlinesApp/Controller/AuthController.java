@@ -53,6 +53,13 @@ public class AuthController {
     @Autowired
     ClientRepository clients;
 
+    /**
+     * Mapowanie do logowania użytkownika
+     * @param loginRequest Ciało zapytania
+     *                     String username - login
+     *                     String password - hasło
+     * @return Wiadomość informująca o powodzeniu autoryzacji, token jwt w przypadku powodzenia
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -74,6 +81,21 @@ public class AuthController {
                 roles));
     }
 
+
+    /**
+     * Mapowanie rejestracji użytkownika
+     * @param signUpRequest Ciało zapytania
+     *                      String username - login
+     *                      String password - hasło
+     *
+     *                      String email - adres e-mail
+     *                      String name - imię
+     *                      String surname - nazwisko
+     *                      String personalID - numer PESEL
+     *                      String phoneNumber - telefon kontaktowy
+     *
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
