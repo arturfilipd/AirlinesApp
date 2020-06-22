@@ -4,5 +4,4 @@ public class AddTicketRequest {
     public Integer flightId;
     public Long userId;
     public String ticketClass;
-    public boolean paid;
 }

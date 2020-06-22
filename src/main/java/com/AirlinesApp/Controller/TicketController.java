@@ -20,16 +20,19 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Kontroler Biletów \
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tickets")
 public class TicketController {
-
     @Autowired TicketRepository repository;
     @Autowired UserRepository users;
     @Autowired ClientRepository clients;
     @Autowired FlightRepository flights;
+
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
@@ -37,11 +40,17 @@ public class TicketController {
         List<Ticket> tickets = repository.getAllTickets();
         return tickets.stream().map(TicketTransformer::convertToDto).collect(Collectors.toList());
     }
-    
+
+    /**
+     * Mapowanie dodania biletów
+     * @param req Ciało zapytania
+     *            Integer flightId - ID lotu
+     *            Long userId - ID użytkownika
+     *            String ticketClass - klasa biletu ("economic" albo "business")     *
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @PostMapping("/add")
     public ResponseEntity<?> newTicket(@Valid @RequestBody AddTicketRequest req){
-        //System.out.println("AAAAAAAAAAAAAAAAAAAAA!");
-        System.out.println("UID = " +req.userId + " FID = " + req.flightId + " class = " + req.ticketClass + "paid = " + req.paid);
       if(!users.existsById(req.userId)){
           return ResponseEntity
                   .badRequest()
@@ -51,10 +60,17 @@ public class TicketController {
         repository.save(new Ticket(req.ticketClass,
                 clients.findOneByUserId(users.findOneById(req.userId)),
                 flights.findOneById(req.flightId),
-                req.paid, null));
+                false, null));
 
         return ResponseEntity.ok(new MessageResponse("Ticked added successfully!"));
     }
+
+    /**
+     *
+     * @param req Ciało zapytania
+     *            id - ID biletu do usunięcia
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteTicket(@Valid @RequestBody DeleteTicketRequest req){
         if(!repository.existsById(req.id)){
