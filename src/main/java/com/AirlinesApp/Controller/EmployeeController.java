@@ -47,7 +47,7 @@ public class EmployeeController {
      * Mapowanie listy pracownikow
      * @return Lista pracowaników w formacie DTO.
      */
-    @GetMapping("/employees")
+    @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('MANAGER')")
     public List<EmployeeDto> getEmployees() {

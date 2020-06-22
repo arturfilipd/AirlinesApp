@@ -1,8 +1,10 @@
 package com.AirlinesApp.Controller;
 
 import com.AirlinesApp.Model.Ticket;
+import com.AirlinesApp.Model.User;
 import com.AirlinesApp.Payload.Request.Tickets.AddTicketRequest;
 import com.AirlinesApp.Payload.Request.Tickets.DeleteTicketRequest;
+import com.AirlinesApp.Payload.Request.Tickets.GetTicketsRequest;
 import com.AirlinesApp.Payload.Response.MessageResponse;
 import com.AirlinesApp.Repository.ClientRepository;
 import com.AirlinesApp.Repository.FlightRepository;
@@ -28,16 +30,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api/tickets")
 public class TicketController {
+
     @Autowired TicketRepository repository;
     @Autowired UserRepository users;
     @Autowired ClientRepository clients;
     @Autowired FlightRepository flights;
 
-
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<TicketDto> getTickets(){
         List<Ticket> tickets = repository.getAllTickets();
+        return tickets.stream().map(TicketTransformer::convertToDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Mapowanie wyswietlania biletow danego klienta
+     * @param req Cialo zapytania
+     *            Integer userID - ID usera
+     * @return Lista biletow
+     */
+    @PostMapping("/listByClientID")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TicketDto> getTicketsByClientId(@Valid @RequestBody GetTicketsRequest req) {
+        Long uID = req.userID.longValue();
+        if(!users.existsById(uID)){
+            ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid user!"));
+        }
+        User u = users.findOneById(uID);
+        List<Ticket> tickets = repository.findAllByClientID(clients.findOneByUserId(u));
         return tickets.stream().map(TicketTransformer::convertToDto).collect(Collectors.toList());
     }
 
@@ -49,8 +69,12 @@ public class TicketController {
      *            String ticketClass - klasa biletu ("economic" albo "business")     *
      * @return Odpowiedź informująca o rezultacie działania.
      */
+
+
     @PostMapping("/add")
     public ResponseEntity<?> newTicket(@Valid @RequestBody AddTicketRequest req){
+        //System.out.println("AAAAAAAAAAAAAAAAAAAAA!");
+        System.out.println("UID = " +req.userId + " FID = " + req.flightId + " class = " + req.ticketClass + "paid = " + req.paid);
       if(!users.existsById(req.userId)){
           return ResponseEntity
                   .badRequest()
@@ -60,7 +84,7 @@ public class TicketController {
         repository.save(new Ticket(req.ticketClass,
                 clients.findOneByUserId(users.findOneById(req.userId)),
                 flights.findOneById(req.flightId),
-                false, null));
+                req.paid, null));
 
         return ResponseEntity.ok(new MessageResponse("Ticked added successfully!"));
     }

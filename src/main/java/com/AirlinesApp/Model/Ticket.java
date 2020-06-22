@@ -1,5 +1,7 @@
 package com.AirlinesApp.Model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -9,21 +11,26 @@ public class Ticket {
     @Id
     @Column(name = "id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Integer id;
 
     @Column(name = "className", nullable = false)
     @NotNull(message = "class name cannot be null")
+    @Getter
     private String className;
 
     @Column(name = "price", nullable = false)
     @NotNull(message = "Price cannot be null")
+    @Getter
     private Long price;
 
     @Column(name = "paid", nullable = false)
     @NotNull(message = "Paid flag cannot be null")
+    @Getter
     private boolean paid;
 
     @Column(name = "seat", nullable = true)
+    @Getter
     private Integer seat;
 
     @ManyToOne
@@ -32,6 +39,7 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name ="flightID", referencedColumnName = "id")
+    @Getter
     private Flight flightID;
 
     public Ticket(){}
