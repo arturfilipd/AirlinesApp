@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * Klasa kontrolera lotów, mapowanego pod adresem "/api/flights/".
+ * Klasa kontrolera lotów, mapowanego pod adresem "/api/flights".
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

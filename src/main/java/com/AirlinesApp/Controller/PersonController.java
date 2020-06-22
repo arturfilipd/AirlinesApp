@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Kontroler Osób, mapowany na adres "/api/people"
+ * Klasa kontrolera osób, mapowanego pod adresem "/api/people"
  */
 @CrossOrigin
 @RestController

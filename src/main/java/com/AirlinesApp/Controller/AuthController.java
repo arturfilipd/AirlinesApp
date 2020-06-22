@@ -27,7 +27,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-
+/**
+ * Klasa kontrolera autoryzacji, mapowanego pod adresem "/api/auth".
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
