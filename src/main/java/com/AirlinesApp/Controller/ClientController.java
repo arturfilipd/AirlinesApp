@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Klasa kontrolera klientów, mapowanego pod adresem "/api/clients/".
+ */
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping()
+@RequestMapping("/api/clients")
 public class ClientController{
     private final ClientService clientService;
-    @GetMapping("/clients")
+    @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<ClientDto> getClients(){
         List<Client> clients = clientService.getAllClients();

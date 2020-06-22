@@ -11,11 +11,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
+/**
+ * Klasa kontrolera Lotnisk, mapowanego pod adresem "/api/airports".
+ */
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +32,11 @@ public class AirportController {
     AirportRepository repository;
 
     private final AirportService airportService;
+
+    /**
+     * Mapowanie adresu listy lotów.
+     * @return lista lotów w formacie DTO.
+     */
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<AirportDto> getAirports(){
@@ -33,14 +44,19 @@ public class AirportController {
         return airports.stream().map(AirportTransformer::convertToDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/add")
+    /**
+     * Mapowanie adresu dodania lotniska. Wymaga roli pracownika
+     * @param req Ciało zapytania
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> addAirport(@Valid @RequestBody AddAirportRequest req){
         if (repository.existsByCode(req.getCode())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Code is already taken!"));
         }
-
         repository.save(new Airport(req.getName(), req.getCode(), req.getCity()));
         return ResponseEntity.ok(new MessageResponse("Airport added successfully!"));
     }

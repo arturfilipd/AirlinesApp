@@ -58,6 +58,12 @@ public class FlightController{
                     .body(new MessageResponse("Error: Invalid source airport!"));
         }
 
+        if(!planes.existsById(req.planeID)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Invalid plane id!"));
+        }
+
         if(!airports.existsById(req.destID)){
             return ResponseEntity
                     .badRequest()

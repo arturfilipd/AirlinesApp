@@ -19,4 +19,6 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
     @Modifying
     @Query("Update Flight f SET f.startDate=:startDate, f.endDate=:endDate  WHERE f.id=:id")
     public void update(@Param("id") Integer id, @Param("startDate") Date starts, @Param("endDate") Date ends);
+
+
 }
