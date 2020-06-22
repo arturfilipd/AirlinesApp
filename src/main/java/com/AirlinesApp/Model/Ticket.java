@@ -42,6 +42,10 @@ public class Ticket {
     @Getter
     private Flight flightID;
 
+    public boolean getPaid(){
+        return paid;
+    }
+
     public Ticket(){}
 
     public Ticket(String className, Client clientID, Flight flightID, boolean paid, Integer seat){

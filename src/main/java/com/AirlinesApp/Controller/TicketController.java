@@ -3,6 +3,7 @@ package com.AirlinesApp.Controller;
 import com.AirlinesApp.Model.Ticket;
 import com.AirlinesApp.Model.User;
 import com.AirlinesApp.Payload.Request.Tickets.AddTicketRequest;
+import com.AirlinesApp.Payload.Request.Tickets.CheckInTicketRequest;
 import com.AirlinesApp.Payload.Request.Tickets.DeleteTicketRequest;
 import com.AirlinesApp.Payload.Request.Tickets.GetTicketsRequest;
 import com.AirlinesApp.Payload.Response.MessageResponse;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,5 +106,22 @@ public class TicketController {
         }
         repository.deleteById(req.id);
         return ResponseEntity.ok(new MessageResponse("Ticket successfully deleted"));
+    }
+
+    /**
+     * Mapowanie odprawy (wybranie miejsca, ustawienie flagi zaplaty)
+     * @param req Cialo zapytania
+     *             ticketID - ID biletu
+     *             seat - numer miejsca
+     * @return Odpowiedz informujaca o rezultacie dzialania
+     */
+    @Transactional
+    @PostMapping("/checkIn")
+    public ResponseEntity<?> checkIn(@Valid @RequestBody CheckInTicketRequest req){
+        if(!repository.existsById(req.ticketID)){
+            ResponseEntity.badRequest().body(new MessageResponse("Error: Ticket does not exist!"));
+        }
+        repository.update(true, req.seat, req.ticketID);
+        return ResponseEntity.ok(new MessageResponse("Ticket checked in successfully"));
     }
 }
