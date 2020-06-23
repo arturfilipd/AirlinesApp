@@ -22,13 +22,5 @@ class AirlinesAppApplicationTests {
     void contextLoads() {
 
     }
-    @Test
-    void exampleTest(){
-        Airport airport = airportRepository.save(new Airport("Test", "TST", "Testowo"));
-
-        Airport foundAirport = airportRepository.findOneById(airport.getId());
-        //System.out.println(airport.getId() + " ?= "+ foundAirport.getId());
-        Assert.assertEquals(airport.getName(), foundAirport.getName());
-    }
 
 }
