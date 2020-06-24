@@ -47,4 +47,16 @@ public class AddEmployeeRequest {
      */
     public Set<String> role;
 
+    public AddEmployeeRequest(String position, Long salary, String name, String surname, String personalID, String phoneNumber, String eMail, Set<String> role){
+        this.position = position;
+        this.salary = salary;
+        this.name = name;
+        this.surname = surname;
+        this.personalID = personalID;
+        this.phoneNumber = phoneNumber;
+        this.eMail = eMail;
+        this.role = role;
+
+    }
+
 }

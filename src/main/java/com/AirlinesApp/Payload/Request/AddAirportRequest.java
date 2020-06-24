@@ -1,6 +1,8 @@
 package com.AirlinesApp.Payload.Request;
 
 
+
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -71,6 +73,10 @@ public class AddAirportRequest {
      */
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public AddAirportRequest(String name, String code, String city) {
+        this.name = name; this.code = code; this.city = city;
     }
 
 }

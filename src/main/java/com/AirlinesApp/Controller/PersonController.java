@@ -1,9 +1,16 @@
 package com.AirlinesApp.Controller;
 
+import com.AirlinesApp.Model.Person;
+import com.AirlinesApp.Repository.PersonRepository;
+import com.AirlinesApp.Transformer.PersonTransformer;
+import com.AirlinesApp.dto.PersonDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Klasa kontrolera osób, mapowanego pod adresem "/api/people"
@@ -12,4 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/people")
-public class PersonController{}
+public class PersonController{
+
+    @Autowired
+    PersonRepository repository;
+
+    @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PersonDto> getEmployees() {
+        List<Person> people = repository.getAllPeople();
+        return people.stream().map(PersonTransformer::convertToDto).collect(Collectors.toList());
+    }
+}

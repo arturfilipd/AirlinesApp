@@ -4,7 +4,6 @@ import com.AirlinesApp.Model.Airport;
 import com.AirlinesApp.Payload.Request.AddAirportRequest;
 import com.AirlinesApp.Payload.Response.MessageResponse;
 import com.AirlinesApp.Repository.AirportRepository;
-import com.AirlinesApp.Service.AirportService;
 import com.AirlinesApp.Transformer.AirportTransformer;
 import com.AirlinesApp.dto.AirportDto;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public class AirportController {
     @Autowired
     AirportRepository repository;
 
-    private final AirportService airportService;
+
 
     /**
      * Mapowanie adresu listy lotów.
@@ -40,7 +39,7 @@ public class AirportController {
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<AirportDto> getAirports(){
-        List<Airport> airports = airportService.getAllAirports();
+        List<Airport> airports = repository.getAllAirports();
         return airports.stream().map(AirportTransformer::convertToDto).collect(Collectors.toList());
     }
 
