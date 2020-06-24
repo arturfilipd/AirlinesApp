@@ -124,7 +124,7 @@ public class FlightControllerTest {
     @WithUserDetails("szef")
     public void delete(){
         String json = "{\n" +
-                "\"id\": 100\n" +
+                "\"id\": 222\n" +
                 "}";
         try {
             mvc.perform(MockMvcRequestBuilders.delete("/api/flights/delete").contentType("application/json")

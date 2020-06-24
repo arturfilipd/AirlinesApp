@@ -42,7 +42,7 @@ public class TicketControllerTests {
     @Test
     public void addTicketTest() throws Exception{
         String json = "{" +
-                "\"flightId\":\"0\",\n" +
+                "\"flightId\":\"100\",\n" +
                 "\"userId\":\"1\",\n" +
                 "\"ticketClass\":\"Economic\",\n" +
                 "\"paid\":\"false\"\n" +
@@ -51,6 +51,20 @@ public class TicketControllerTests {
                 .content(json).header("Authorization", utils.getUserToken("szef", "qwerty"))
         ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                 .andExpect(content().string(containsString("success")));
+    }
+    @WithUserDetails("szef")
+    @Test
+    public void addTicketIvalidFlightTest() throws Exception{
+        String json = "{" +
+                "\"flightId\":\"-1\",\n" +
+                "\"userId\":\"1\",\n" +
+                "\"ticketClass\":\"Economic\",\n" +
+                "\"paid\":\"false\"\n" +
+                "}";
+        mvc.perform(post("/api/tickets/add").contentType("application/json")
+                .content(json).header("Authorization", utils.getUserToken("szef", "qwerty"))
+        ).andDo(print()).andExpect(status().isBadRequest()).andExpect(content().contentType("application/json"))
+                .andExpect(content().string(containsString("Error: No such flight!")));
     }
     @WithUserDetails("szef")
     @Test

@@ -71,6 +71,11 @@ public class TicketController {
 
     @PostMapping("/add")
     public ResponseEntity<?> newTicket(@Valid @RequestBody AddTicketRequest req, @RequestHeader String Authorization){
+        if (!flights.existsById(req.flightId)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: No such flight!"));
+        }
         if(!users.existsById(req.userId)){
           return ResponseEntity
                   .badRequest()
