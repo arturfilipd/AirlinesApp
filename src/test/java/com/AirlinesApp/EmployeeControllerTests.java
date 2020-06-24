@@ -4,6 +4,7 @@ import com.AirlinesApp.Model.Employee;
 import com.AirlinesApp.Model.Person;
 import com.AirlinesApp.Repository.EmployeeRepository;
 import com.AirlinesApp.Repository.PersonRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -23,10 +25,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
+
 public class EmployeeControllerTests {
 
     @Autowired
@@ -69,6 +72,16 @@ public class EmployeeControllerTests {
             e.printStackTrace();
         }
 
+        // LIST
+
+        try{
+            mvc.perform(MockMvcRequestBuilders.get("/api/employees/list"))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andExpect(content().string(containsString("Test")));
+        }catch (Exception e){e.printStackTrace();}
+
+        //FIRE
+
         Person personID = people.findOneByName("TestEmployee");
         Employee employee = employees.findOneByPersonID(personID);
         Integer id = employee.getId();
@@ -87,7 +100,6 @@ public class EmployeeControllerTests {
 
 
 
-
     } //addEmployeeTest
 
     @Test
@@ -95,4 +107,7 @@ public class EmployeeControllerTests {
     public void fireEmployeeTest(){
 
     }
+
+    @After
+    public void end(){}
 }
