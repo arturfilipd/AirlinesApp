@@ -72,6 +72,28 @@ public class EmployeeControllerTests {
             e.printStackTrace();
         }
 
+        //ADD - EMAIL ERROR
+
+        json = "{\n" +
+                "\"position\": \"employee\",\n" +
+                "\"salary\": 1300,\n" +
+                "\"name\": \"TestEmployee\",\n" +
+                "\"surname\": \"Brzeczystrzykiewicz\",\n" +
+                "\"personalID\": \"123245\",\n" +
+                "\"phoneNumber\": \"2325435\",\n" +
+                "\"eMail\": \"typiarz2000@gmail.com\",\n" +
+                "\"role\": [\"employee\", \"user\"]\n" +
+                "}";
+
+        try {
+            mvc.perform(post("/api/employees/add").contentType("application/json")
+                    .content(json)
+            ).andDo(print()).andExpect(status().isBadRequest())
+                    .andExpect(content().string(containsString("Error: eMail is already taken!")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // LIST
 
         try{
@@ -93,6 +115,20 @@ public class EmployeeControllerTests {
                     .content(json)
             ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                     .andExpect(content().string(containsString("success")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //FIRE - INVALID EMPLOYEE
+
+        json = "{\n" +
+                "\"id\":" + (-1) + "\n" +
+                "}";
+        try {
+            mvc.perform(post("/api/employees/fire").contentType("application/json")
+                    .content(json)
+            ).andDo(print()).andExpect(status().isBadRequest()).andExpect(content().contentType("application/json"))
+                    .andExpect(content().string(containsString("Error: no such Employee!")));
         } catch (Exception e) {
             e.printStackTrace();
         }
