@@ -89,6 +89,11 @@ public class TicketController {
                     .body(new MessageResponse("Error: Invalid user!"));
         }
 
+        if(!flights.existsById(req.flightId)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Flight does not exist!"));
+        }
         repository.save(new Ticket(req.ticketClass,
                 clients.findOneByUserId(users.findOneById(req.userId)),
                 flights.findOneById(req.flightId),
