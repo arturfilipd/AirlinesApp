@@ -35,7 +35,7 @@ public class Airport {
         this.cityName = cityName;
     }
 
-    public Airport (){};
+    public Airport (){}
 
     public Integer getId(){
         return id;
