@@ -92,7 +92,7 @@ public class PlaneControllerTest {
                 "\"airportId\": 100\n" +
                 "}";
         try {
-            mvc.perform(post("/api/planes/add").contentType("application/json")
+            mvc.perform(MockMvcRequestBuilders.get("/api/planes/getByAirport").contentType("application/json")
                     .content(json)
             ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                     .andExpect(content().string(containsString("PlanesListTest")));

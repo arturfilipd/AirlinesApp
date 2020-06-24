@@ -16,3 +16,6 @@ insert into User_roles values(1, 3);
 insert into Airports values(100, 'AIRPORT A', 'ARPA', 'CITY A');
 insert into Airports values(101, 'AIRPORT A', 'ARPB', 'CITY B');
 insert into Planes values(102, 'PlanesListTest', 100, 20, 100);
+insert into Clients values(500, 1);
+insert into Flights values(100, '2020-06-23', 400, 200, '2020-06-22', 101, 102, 100);
+insert into Flights values(111, '2020-01-21', 400, 200, '2020-01-21', 101, 102, 100);
