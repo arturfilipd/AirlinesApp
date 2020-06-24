@@ -57,6 +57,9 @@ public class PlaneController{
     @GetMapping("/getByAirport")
     @PreAuthorize("hasRole('EMPLOYEE')")
    public List<PlaneDto> getPlanesAtAirport(@Valid @RequestBody GetPlanesRequest req){
+        if(!airports.existsById(req.airportId)){
+            return null;
+        }
         List<Plane> planes = repository.getAllByaPID(airports.findOneById(req.airportId));
         return planes.stream().map(PlaneTransformer::convertToDto).collect(Collectors.toList());
     }

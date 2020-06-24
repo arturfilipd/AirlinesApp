@@ -11,3 +11,8 @@ insert into Roles values(3, 'ROLE_MANAGER');
 insert into User_roles values(1, 1);
 insert into User_roles values(1, 2);
 insert into User_roles values(1, 3);
+
+--PlaneController Tests
+insert into Airports values(100, 'AIRPORT A', 'ARPA', 'CITY A');
+insert into Airports values(101, 'AIRPORT A', 'ARPB', 'CITY B');
+insert into Planes values(102, 'PlanesListTest', 100, 20, 100);
