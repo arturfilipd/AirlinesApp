@@ -17,4 +17,5 @@ public interface AirportRepository extends JpaRepository<Airport, Integer> {
     Airport findOneById(Integer id);
     Boolean existsByCode(String code);
     Boolean existsById(Long id);
+    Airport findOneByAirportName(String airportName);
 }

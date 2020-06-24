@@ -1,5 +1,7 @@
 package com.AirlinesApp.Model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +15,7 @@ public class Airport {
 
     @Column(name = "airportName", nullable = false)
     @NotNull(message = "Airport name cannot be null")
+    @Getter
     private String airportName;
 
     @Column(name = "code", nullable = false)

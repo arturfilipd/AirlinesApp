@@ -1,7 +1,7 @@
 package com.AirlinesApp.Payload.Request;
 
 
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
+
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
