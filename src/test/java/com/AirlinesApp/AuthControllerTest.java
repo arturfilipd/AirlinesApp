@@ -55,9 +55,21 @@ public class AuthControllerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    @Test
+    public void signInNameError(){
         //Signup - Username error
-
+        String json = "{\n" +
+                "    \"username\": \"szef\",\n" +
+                "    \"email\": \"mail@oftheyear.com\",\n" +
+                "    \"password\": \"qwerty\",\n" +
+                "    \"role\": [\"user\"],\n" +
+                "    \"name\": \"Franek\",\n" +
+                "    \"surname\": \"Kimono\",\n" +
+                "    \"phoneNumber\": \"445666768\",\n" +
+                "    \"personalID\": \"123452331\"\n" +
+                "}";
         try {
             mvc.perform(post("/api/auth/signup").contentType("application/json")
                     .content(json)
@@ -66,12 +78,14 @@ public class AuthControllerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        //Signup - email error
 
-        json = "{\n" +
+    @Test
+    public void signInEmailError(){
+        String json = "{\n" +
                 "    \"username\": \"testuser2\",\n" +
-                "    \"email\": \"typ22s22@typ.com\",\n" +
+                "    \"email\": \"employee@oftheyear.com\",\n" +
                 "    \"password\": \"qwerty\",\n" +
                 "    \"role\": [\"user\"],\n" +
                 "    \"name\": \"Franek\",\n" +
@@ -88,11 +102,11 @@ public class AuthControllerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-
-        //Signin - invalid
-
-        json = "{\n" +
+    @Test
+    public void signInInvalid(){
+        String json = "{\n" +
                 "\"username\": \"testuser\",\n" +
                 "\"password\": \"ytrewq\"\n" +
                 "}";
@@ -105,10 +119,12 @@ public class AuthControllerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        //Signin Valid
-        json = "{\n" +
-                "\"username\": \"testuser\",\n" +
+    @Test
+    public void signIn(){
+        String json = "{\n" +
+                "\"username\": \"szef\",\n" +
                 "\"password\": \"qwerty\"\n" +
                 "}";
 

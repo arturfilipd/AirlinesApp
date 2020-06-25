@@ -4,7 +4,6 @@ import com.AirlinesApp.Model.Employee;
 import com.AirlinesApp.Model.Person;
 import com.AirlinesApp.Repository.EmployeeRepository;
 import com.AirlinesApp.Repository.PersonRepository;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -71,17 +70,19 @@ public class EmployeeControllerTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    } //addEmployeeTest
 
-        //ADD - EMAIL ERROR
-
-        json = "{\n" +
+    @Test
+    @WithUserDetails("szef")
+    public void addEmployeeInvalidEmail(){
+        String json = "{\n" +
                 "\"position\": \"employee\",\n" +
                 "\"salary\": 1300,\n" +
                 "\"name\": \"TestEmployee\",\n" +
                 "\"surname\": \"Brzeczystrzykiewicz\",\n" +
                 "\"personalID\": \"123245\",\n" +
                 "\"phoneNumber\": \"2325435\",\n" +
-                "\"eMail\": \"typiarz2000@gmail.com\",\n" +
+                "\"eMail\": \"employee@oftheyear.com2\",\n" +
                 "\"role\": [\"employee\", \"user\"]\n" +
                 "}";
 
@@ -93,21 +94,15 @@ public class EmployeeControllerTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        // LIST
-
-        try{
-            mvc.perform(MockMvcRequestBuilders.get("/api/employees/list"))
-                    .andDo(print()).andExpect(status().isOk())
-                    .andExpect(content().string(containsString("Test")));
-        }catch (Exception e){e.printStackTrace();}
-
-        //FIRE
-
-        Person personID = people.findOneByName("TestEmployee");
+    @Test
+    @WithUserDetails("szef")
+    public void fireEmployeeTest(){
+        Person personID = people.findOneByName("Tester");
         Employee employee = employees.findOneByPersonID(personID);
         Integer id = employee.getId();
-        json = "{\n" +
+        String json = "{\n" +
                 "\"id\":" + id + "\n" +
                 "}";
         try {
@@ -118,10 +113,12 @@ public class EmployeeControllerTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        //FIRE - INVALID EMPLOYEE
-
-        json = "{\n" +
+    @Test
+    @WithUserDetails("szef")
+    public void fireEmployeeInvalid(){
+        String json = "{\n" +
                 "\"id\":" + (-1) + "\n" +
                 "}";
         try {
@@ -132,18 +129,15 @@ public class EmployeeControllerTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
-
-    } //addEmployeeTest
+    }
 
     @Test
     @WithUserDetails("szef")
-    public void fireEmployeeTest(){
-
+    public void listEmployees(){
+        try{
+            mvc.perform(MockMvcRequestBuilders.get("/api/employees/list"))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andExpect(content().string(containsString("Test")));
+        }catch (Exception e){e.printStackTrace();}
     }
-
-    @After
-    public void end(){}
 }
