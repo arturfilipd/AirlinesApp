@@ -6,10 +6,10 @@ insert into Airports values (1, 'Lech Walesa Airport', 'Gdansk', 'GDN');
 insert into Airports values (2, 'Katowice International', 'Katowice', 'KTW');
 insert into Airports values (3, 'Heringsdorf Airport', 'Heringsdorf', 'HDF');
 
-insert into Planes values (0, 'Airbus 220', 80, 40, 0);
-insert into Planes values (1, 'Boeing 787', 160, 80, 1);
-insert into Planes values (2, 'Boeing 777', 200, 100, 2);
-insert into Planes values (3, 'Boeing 777', 200, 100, 3);
+insert into Planes(id, plane_name, seats_in_economic, seats_in_buisness, apid) values (0, 'Airbus 220', 80, 40, 0);
+insert into Planes(id, plane_name, seats_in_economic, seats_in_buisness, apid) values (1, 'Boeing 787', 160, 80, 1);
+insert into Planes(id, plane_name, seats_in_economic, seats_in_buisness, apid) values (2, 'Boeing 777', 200, 100, 2);
+insert into Planes(id, plane_name, seats_in_economic, seats_in_buisness, apid) values (3, 'Boeing 777', 200, 100, 3);
 
 insert into People values (0, 'Krzysztof', '66032243631', '476348980', 'Bielak');
 insert into People values (1, 'Adam', '74011868355', '458741256', 'Kisiel');
