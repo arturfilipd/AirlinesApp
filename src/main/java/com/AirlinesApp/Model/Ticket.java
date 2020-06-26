@@ -46,6 +46,10 @@ public class Ticket {
         return paid;
     }
 
+    public Integer getSeat() {
+        return seat;
+    }
+
     public Ticket(){}
 
     public Ticket(String className, Client clientID, Flight flightID, boolean paid, Integer seat){

@@ -150,23 +150,28 @@ public class FlightController{
     }
     @PostMapping("/getFreeSeats")
     public List<Integer> getFreeSeats(@RequestBody GetFreeSeatsRequest req){
-        Flight flight = repository.findOneById(req.flightId);
-        List<Ticket> tickets = this.tickets.findAllByFlightID(flight);
-        List<Integer> freeSeats = new LinkedList<>();
-        int seats = 0;
-        if(req.className.equals("Economic"))
-            seats = flight.getPlaneID().getSeatsInEconomic();
-        else
-            seats = flight.getPlaneID().getSeatsInBuisness();
-        boolean free = true;
-        for(int i = 0; i<seats; i++){
-            free = true;
-            for(int j = 0;j<tickets.size();j++){
-                if(i == tickets.get(j).getSeat())
-                    free = false;
+        if(repository.existsById(req.flightId)) {
+            Flight flight = repository.findOneById(req.flightId);
+            List<Ticket> tickets = this.tickets.findAllByFlightID(flight);
+            List<Integer> freeSeats = new LinkedList<>();
+            int seats = 0;
+            if (req.className.equals("Economic"))
+                seats = flight.getPlaneID().getSeatsInEconomic();
+            else
+                seats = flight.getPlaneID().getSeatsInBuisness();
+            boolean free = true;
+            for (int i = 0; i < seats; i++) {
+                free = true;
+                for (int j = 0; j < tickets.size(); j++) {
+                    if (tickets.get(j).getSeat()!=null && i == tickets.get(j).getSeat())
+                        free = false;
                 }
-            if(free == true) freeSeats.add(i+1);
+                if (free == true) freeSeats.add(i);
             }
-        return freeSeats;
+            return freeSeats;
+        }
+        List<Integer> responseList = new LinkedList<>();
+        responseList.add(-1);
+        return responseList;
         }
 }
