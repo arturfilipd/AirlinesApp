@@ -1,4 +1,8 @@
 package com.AirlinesApp.Model;
+
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,30 +19,43 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long id;
 
     @NotBlank
     @Size(max = 20)
+    @Setter
     private String username;
 
     @NotBlank
     @Size(max = 50)
     @Email
+    @Setter
     private String email;
 
     @NotBlank
     @Size(max = 120)
+    @Setter
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Setter
     private Set<Role> roles = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "personID", referencedColumnName = "id")
+    @Setter
     private Person personID;
+
+
+    //2OAuth
+    @Getter @Enumerated(EnumType.STRING) @Setter private AuthProvider provider;
+    @Getter @Setter private String providerId;
+    @Getter @Setter private String imageUrl;
+    @Getter @Setter private String name;
 
     public User() {
     }
