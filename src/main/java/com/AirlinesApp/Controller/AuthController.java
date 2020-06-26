@@ -1,6 +1,7 @@
 package com.AirlinesApp.Controller;
 
 import com.AirlinesApp.Model.*;
+import com.AirlinesApp.Payload.Request.ChangePasswordRequest;
 import com.AirlinesApp.Payload.Request.LoginRequest;
 import com.AirlinesApp.Payload.Request.SignupRequest;
 import com.AirlinesApp.Payload.Response.JwtResponse;
@@ -13,6 +14,7 @@ import com.AirlinesApp.Security.Services.UserDetailsImpl;
 import com.AirlinesApp.Security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -159,4 +162,38 @@ public class AuthController {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+
+    /**
+     * Mapowanie zmiany hasła uźytkownika
+     * @param req Ciało zapytania
+     *            userId - ID użytkownika zgłaszającego zapytanie
+     *            oldPassword - obecne hasło użytkownika
+     *            newPassword - nowe hasło użytkownika
+     * @param Authorization Token JWT uwierzytelniający użytkownika przesyłany w nagłówku
+     * @return Odpowiedź informująca o rezultacie działania.
+     */
+    @Transactional
+    @PostMapping("changePass")
+    @PreAuthorize("hasRole('USER') or hasRole('EMPLOYEE') or hasRole('MANAGER')")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest req, @RequestHeader String Authorization){
+        if(!userRepository.existsById(req.userId)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Invalid user!"));
+        }
+        String tokenName = jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        if(!tokenName.equals(userRepository.findOneById(req.userId).getUsername())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Unauthorized!"));
+        }
+        User user = userRepository.findOneById(req.userId);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), req.oldPassword));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        userRepository.changePassword(user.getId(), encoder.encode(req.newPassword));
+        return ResponseEntity.ok(new MessageResponse("Password changed successfully!"));
+    }
+
 }
