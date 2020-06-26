@@ -64,7 +64,8 @@ public class TicketController {
      * @param req Ciało zapytania
      *            Integer flightId - ID lotu
      *            Long userId - ID użytkownika
-     *            String ticketClass - klasa biletu ("economic" albo "business")     *
+     *            String ticketClass - klasa biletu ("economic" albo "business")
+     * @param Authorization Token JWT uwierzytelniający użytkownika przesyłany w nagłówku
      * @return Odpowiedź informująca o rezultacie działania.
      */
 
@@ -106,6 +107,7 @@ public class TicketController {
      *
      * @param req Ciało zapytania
      *            id - ID biletu do usunięcia
+     * @param Authorization Token JWT uwierzytelniający użytkownika przesyłany w nagłówku
      * @return Odpowiedź informująca o rezultacie działania.
      */
     @DeleteMapping("/delete")
@@ -120,7 +122,7 @@ public class TicketController {
         if(!tokenName.equals(username)){
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Invalid user!"));
+                    .body(new MessageResponse("Error: Unauthorized!"));
         }
         repository.deleteById(req.id);
         return ResponseEntity.ok(new MessageResponse("Ticket successfully deleted"));
@@ -131,16 +133,23 @@ public class TicketController {
      * @param req Cialo zapytania
      *             ticketID - ID biletu
      *             seat - numer miejsca
+     * @param Authorization Token JWT uwierzytelniający użytkownika przesyłany w nagłówku
      * @return Odpowiedz informujaca o rezultacie dzialania
      */
     @Transactional
     @PostMapping("/checkIn")
-    public ResponseEntity<?> checkIn(@Valid @RequestBody CheckInTicketRequest req){
+    public ResponseEntity<?> checkIn(@Valid @RequestBody CheckInTicketRequest req, @RequestHeader String Authorization){
         if(!repository.existsById(req.ticketID)){
             ResponseEntity.badRequest().body(new MessageResponse("Error: Ticket does not exist!"));
         }
+        String tokenName = jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        String username = repository.findOneById(req.ticketID).getClientID().getUserId().getUsername();
+        if(!tokenName.equals(username)){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Unauthorized!"));
+        }
         repository.update(true, req.seat, req.ticketID);
-        //Generowanie tego barcode klucza jak ci sie będzie chciało//
         return ResponseEntity.ok(new MessageResponse("Ticket checked in successfully"));
     }
 
