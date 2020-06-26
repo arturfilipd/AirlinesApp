@@ -119,7 +119,10 @@ public class EmployeeController {
         user.setPersonID(p);
         user.setRoles(roles);
         users.save(user);
-        return ResponseEntity.ok(new MessageResponse("Employee added successfully!"));
+        return ResponseEntity.ok(new MessageResponse("{\n" +
+                "\"message\": \"Employee added successfully!\".\n" +
+                "\"password\": \"" + pass + "\"\n" +
+                "}"));
     }
 
     /**

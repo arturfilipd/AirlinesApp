@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,10 +35,13 @@ public class AuthControllerTest {
                 .build();
     }
 
+    @Autowired
+    TestUtils utils;
+
     @Test
     public void authTest() {
         String json = "{\n" +
-                "    \"username\": \"testuser\",\n" +
+                "    \"username\": \"signuptester\",\n" +
                 "    \"email\": \"typ22s22@typ.com\",\n" +
                 "    \"password\": \"qwerty\",\n" +
                 "    \"role\": [\"user\"],\n" +
@@ -84,7 +88,7 @@ public class AuthControllerTest {
     @Test
     public void signInEmailError(){
         String json = "{\n" +
-                "    \"username\": \"testuser2\",\n" +
+                "    \"username\": \"testuser3\",\n" +
                 "    \"email\": \"employee@oftheyear.com\",\n" +
                 "    \"password\": \"qwerty\",\n" +
                 "    \"role\": [\"user\"],\n" +
@@ -137,4 +141,43 @@ public class AuthControllerTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    @WithUserDetails("testuser2")
+    public void changePasswordInvalid(){
+        String json ="{\n" +
+                "\"userId\": 5,\n" +
+                "\"oldPassword\": \"invalid\",\n" +
+                "\"newPassword\": \"qwerty\"\n" +
+                "}";
+
+        try {
+            mvc.perform(post("/api/auth/changePass").contentType("application/json")
+                    .content(json)
+            ).andDo(print()).andExpect(status().isBadRequest());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @WithUserDetails("passchanger")
+    public void changePassword(){
+        String json = "{\n" +
+                "\"userId\": 4,\n" +
+                "\"oldPassword\": \"qwerty\",\n" +
+                "\"newPassword\": \"qwertyyy\"\n" +
+                "}";
+
+        try {
+            mvc.perform(post("/api/auth/changePass").contentType("application/json")
+                    .content(json).header("Authorization", utils.getUserToken("passchanger", "qwerty"))
+            ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
+                    .andExpect(content().string(containsString("Password changed successfully!")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
