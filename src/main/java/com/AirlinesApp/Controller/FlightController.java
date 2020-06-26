@@ -3,13 +3,16 @@ package com.AirlinesApp.Controller;
 import com.AirlinesApp.Model.Airport;
 import com.AirlinesApp.Model.Flight;
 import com.AirlinesApp.Model.Plane;
+import com.AirlinesApp.Model.Ticket;
 import com.AirlinesApp.Payload.Request.DeleteRequest;
 import com.AirlinesApp.Payload.Request.Flights.AddFlightRequest;
 import com.AirlinesApp.Payload.Request.Flights.EditFlightRequest;
+import com.AirlinesApp.Payload.Request.Flights.GetFreeSeatsRequest;
 import com.AirlinesApp.Payload.Response.MessageResponse;
 import com.AirlinesApp.Repository.AirportRepository;
 import com.AirlinesApp.Repository.FlightRepository;
 import com.AirlinesApp.Repository.PlaneRepository;
+import com.AirlinesApp.Repository.TicketRepository;
 import com.AirlinesApp.Transformer.FlightTransformer;
 import com.AirlinesApp.dto.FlightDto;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +46,9 @@ public class FlightController{
 
     @Autowired
     PlaneRepository planes;
+
+    @Autowired
+    TicketRepository tickets;
 
 
     /**
@@ -141,5 +148,25 @@ public class FlightController{
         repository.update(req.id, req.newStart, req.newEnd);
         return ResponseEntity.ok(new MessageResponse("Flight edited successfully!"));
     }
-
+    @PostMapping("/getFreeSeats")
+    public List<Integer> getFreeSeats(@RequestBody GetFreeSeatsRequest req){
+        Flight flight = repository.findOneById(req.flightId);
+        List<Ticket> tickets = this.tickets.findAllByFlightID(flight);
+        List<Integer> freeSeats = new LinkedList<>();
+        int seats = 0;
+        if(req.className.equals("Economic"))
+            seats = flight.getPlaneID().getSeatsInEconomic();
+        else
+            seats = flight.getPlaneID().getSeatsInBuisness();
+        boolean free = true;
+        for(int i = 0; i<seats; i++){
+            free = true;
+            for(int j = 0;j<tickets.size();j++){
+                if(i == tickets.get(j).getSeat())
+                    free = false;
+                }
+            if(free == true) freeSeats.add(i+1);
+            }
+        return freeSeats;
+        }
 }

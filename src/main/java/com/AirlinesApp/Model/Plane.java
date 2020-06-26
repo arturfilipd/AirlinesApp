@@ -30,6 +30,14 @@ public class Plane {
 
     public Plane(){}
 
+    public Integer getSeatsInEconomic() {
+        return seatsInEconomic;
+    }
+
+    public Integer getSeatsInBuisness() {
+        return seatsInBuisness;
+    }
+
     public Plane(String name, Integer seatsInEconomic, Integer seatsInBuisness, Airport airport){
         this.planeName = name;
         this.seatsInBuisness = seatsInBuisness;

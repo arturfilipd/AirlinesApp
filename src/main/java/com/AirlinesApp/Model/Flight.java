@@ -45,6 +45,10 @@ public class Flight {
     @Getter
     private Plane planeID;
 
+    public Plane getPlaneID(){
+        return planeID;
+    }
+
     public Flight(){}
 
     public Flight(Date starts, Date ends, Airport source, Airport destination, Long eco, Long buis, Plane plane){
@@ -57,4 +61,17 @@ public class Flight {
         this.planeID = plane;
     }
 
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "id=" + id +
+                ", priceEconomic=" + priceEconomic +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", priceBuisness=" + priceBuisness +
+                ", sAPID=" + sAPID +
+                ", dAPID=" + dAPID +
+                ", planeID=" + planeID +
+                '}';
+    }
 }
