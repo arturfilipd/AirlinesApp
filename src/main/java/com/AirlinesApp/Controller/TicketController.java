@@ -39,7 +39,7 @@ public class TicketController {
     @Autowired ClientRepository clients;
     @Autowired FlightRepository flights;
 
-    @Autowired private JwtUtils jwtUtils;
+    @Autowired JwtUtils jwtUtils;
 
     /**
      * Mapowanie wyswietlania biletow danego klienta
@@ -152,6 +152,4 @@ public class TicketController {
         repository.update(true, req.seat, req.ticketID);
         return ResponseEntity.ok(new MessageResponse("Ticket checked in successfully"));
     }
-
-
 }

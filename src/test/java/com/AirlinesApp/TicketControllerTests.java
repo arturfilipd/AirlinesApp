@@ -84,11 +84,13 @@ public class TicketControllerTests {
     @Test
     public void checkInTicketTest() throws Exception{
         String json = "{" +
-                "\"ticketID\":\"100\",\n" +
+                "\"ticketID\":\"101\",\n" +
                 "\"seat\":\"22\"\n" +
                 "}";
+        String jwt = utils.getUserToken("szef", "qwerty");
+        System.out.println("TOKEN = " + jwt);
         mvc.perform(post("/api/tickets/checkIn").contentType("application/json")
-                .content(json).header("Authorization", utils.getUserToken("szef", "qwerty"))
+                .content(json).header("Authorization", jwt)
         ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                 .andExpect(content().string(containsString("success")));
     }
