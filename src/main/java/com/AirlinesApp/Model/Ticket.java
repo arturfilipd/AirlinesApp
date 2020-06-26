@@ -52,7 +52,7 @@ public class Ticket {
         this.className = className;
         this.clientID = clientID;
         this.flightID = flightID;
-        if(className == "economic")
+        if(className.equals("Economic"))
             this.price = flightID.getPriceEconomic();
         else
             this.price = flightID.getPriceBuisness();
