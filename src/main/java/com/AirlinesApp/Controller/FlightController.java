@@ -157,7 +157,6 @@ public class FlightController{
      * @return Lista wolnych miejsc
      */
     @PostMapping("/getFreeSeats")
-    @PreAuthorize("hasRole('EMPLOYEE')")
     public List<Integer> getFreeSeats(@RequestBody GetFreeSeatsRequest req){
         if(repository.existsById(req.flightId)) {
             Flight flight = repository.findOneById(req.flightId);
