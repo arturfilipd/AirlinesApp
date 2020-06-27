@@ -43,7 +43,7 @@ public class TicketControllerTests {
     public void addTicketTest() throws Exception{
         String json = "{" +
                 "\"flightId\":\"100\",\n" +
-                "\"userId\":\"1\",\n" +
+                "\"userId\":\"91\",\n" +
                 "\"ticketClass\":\"Economic\",\n" +
                 "\"paid\":\"false\"\n" +
                 "}";

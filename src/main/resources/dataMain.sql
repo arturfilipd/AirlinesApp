@@ -31,11 +31,11 @@ insert into Flights values(2, '2020-06-23', 400, 200, '2020-06-22', 3, 2, 2);
 insert into Tickets(id, class_name, paid, price, seat, clientId, flightId) values(0, 'Economic', false, 200, null, 0, 0);
 insert into Tickets(id, class_name, paid, price, seat, clientId, flightId) values(1, 'Business', true, 500, null, 1, 1);
 
-insert into Users values(1,'Krzysztof@example.com', '$2a$10$jR8eB9ffzpjFY9HgVe/SvuaHO11HtR8xZO79c7SNoUxBsTncsABQ.', 'szef', 0); --password is qwerty
-insert into Users values(2,'Adam@example.com', 'qwerty', 'Adam', 1);
-insert into Users values(3,'Wojciech@example.com', 'qwerty', 'Wojciech', 2);
-insert into Users values(4,'Beata@example.com', 'qwerty', 'Beata', 3);
-insert into Users values(5,'Aleksandra@example.com', 'qwerty', 'Aleksandra', 4);
+insert into Users(id,email, password, username, personid, provider, image_url, provider_id) values(1,'Krzysztof@example.com', '$2a$10$jR8eB9ffzpjFY9HgVe/SvuaHO11HtR8xZO79c7SNoUxBsTncsABQ.', 'szef', 0,'local', null, null); --password is qwerty
+insert into Users(id,email, password, username, personid, provider, image_url, provider_id) values(2,'Adam@example.com', 'qwerty', 'Adam', 1,'local', null, null);
+insert into Users(id,email, password, username, personid, provider, image_url, provider_id) values(3,'Wojciech@example.com', 'qwerty', 'Wojciech', 2,'local', null, null);
+insert into Users(id,email, password, username, personid, provider, image_url, provider_id) values(4,'Beata@example.com', 'qwerty', 'Beata', 3,'local', null, null);
+insert into Users(id,email, password, username, personid, provider, image_url, provider_id) values(5,'Aleksandra@example.com', 'qwerty', 'Aleksandra', 4,'local', null, null);
 
 insert into Roles values(1, 'ROLE_USER');
 insert into Roles values(2, 'ROLE_EMPLOYEE');

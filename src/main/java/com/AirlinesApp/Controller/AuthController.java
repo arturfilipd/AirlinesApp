@@ -20,15 +20,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -158,6 +155,9 @@ public class AuthController{
 
         user.setRoles(roles);
         user.setPersonID(person);
+        user.setImageUrl(null);
+        user.setProvider(AuthProvider.local);
+        user.setProviderId(null);
         userRepository.save(user);
         Client client = new Client();
         client.setUserId(user);

@@ -164,7 +164,7 @@ public class AuthControllerTest {
     @WithUserDetails("passchanger")
     public void changePassword(){
         String json = "{\n" +
-                "\"userId\": 4,\n" +
+                "\"userId\": 94,\n" +
                 "\"oldPassword\": \"qwerty\",\n" +
                 "\"newPassword\": \"qwertyyy\"\n" +
                 "}";

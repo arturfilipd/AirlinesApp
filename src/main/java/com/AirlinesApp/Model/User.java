@@ -55,7 +55,7 @@ public class User {
     @Getter @Enumerated(EnumType.STRING) @Setter private AuthProvider provider;
     @Getter @Setter private String providerId;
     @Getter @Setter private String imageUrl;
-    @Getter @Setter private String name;
+
 
     public User() {
     }
