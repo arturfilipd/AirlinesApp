@@ -1,0 +1,8 @@
+<div class="thymeDiv" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <tr>
+        <td>Current user count: </td>
+        <td th:text="${userCount}" class="thymeHL">0</td>
+        <td>Newest user: </td>
+        <td th:text="${lastUser.login}" class="thymeHL">login</td>
+    </tr>
+</div>
