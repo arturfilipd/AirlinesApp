@@ -33,9 +33,10 @@ public class UserController {
     public ModelAndView userlistePage() {
         ModelAndView model = new ModelAndView();
         List<User> users = userRepository.getAllUsers();
-        model.addObject("users", users);
         model.addObject("userCount", users.size());
-        model.addObject("lastUser", users.get(users.size()-1));
+        System.out.println("SIZE = " + users.size());
+        System.out.println("NAME = " + users.get(users.size()-1).getUsername());
+        model.addObject("lastUser", users.get(users.size()-1).getUsername());
         model.setViewName("index");
         return model;
     }
