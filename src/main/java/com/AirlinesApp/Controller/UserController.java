@@ -8,7 +8,12 @@ import com.AirlinesApp.Security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -22,4 +27,17 @@ public class UserController {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
+
+    @RequestMapping(value = {"/thyme"})
+    @ResponseBody
+    public ModelAndView userlistePage() {
+        ModelAndView model = new ModelAndView();
+        List<User> users = userRepository.getAllUsers();
+        model.addObject("users", users);
+        model.addObject("userCount", users.size());
+        model.addObject("lastUser", users.get(users.size()-1));
+        model.setViewName("index");
+        return model;
+    }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
@@ -19,7 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
-
+    @Query(value = "Select * from Users", nativeQuery = true)
+    List<User> getAllUsers();
     User findOneById(Long userId);
 
     User findOneByPersonID(Person personID);
