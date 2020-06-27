@@ -4,6 +4,7 @@ import com.AirlinesApp.Model.*;
 import com.AirlinesApp.Payload.Request.Employees.AddEmployeeRequest;
 import com.AirlinesApp.Payload.Request.Employees.FireEmployeeRequest;
 import com.AirlinesApp.Payload.Response.MessageResponse;
+import com.AirlinesApp.Payload.Response.NewEmployeeResponse;
 import com.AirlinesApp.Repository.EmployeeRepository;
 import com.AirlinesApp.Repository.PersonRepository;
 import com.AirlinesApp.Repository.RoleRepository;
@@ -15,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -119,10 +120,7 @@ public class EmployeeController {
         user.setPersonID(p);
         user.setRoles(roles);
         users.save(user);
-        return ResponseEntity.ok(new MessageResponse("{\n" +
-                "\"message\": \"Employee added successfully!\".\n" +
-                "\"password\": \"" + pass + "\"\n" +
-                "}"));
+        return ResponseEntity.ok(new NewEmployeeResponse(req.eMail, pass));
     }
 
     /**
