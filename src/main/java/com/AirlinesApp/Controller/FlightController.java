@@ -148,7 +148,16 @@ public class FlightController{
         repository.update(req.id, req.newStart, req.newEnd);
         return ResponseEntity.ok(new MessageResponse("Flight edited successfully!"));
     }
+
+    /**
+     * Mapowanie gettera wolnych miejsc w locie
+     * @param req Ciało zapytania
+     *            Integer flightId - ID lotu
+     *            String className - nazwa klasy miejsc
+     * @return Lista wolnych miejsc
+     */
     @PostMapping("/getFreeSeats")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public List<Integer> getFreeSeats(@RequestBody GetFreeSeatsRequest req){
         if(repository.existsById(req.flightId)) {
             Flight flight = repository.findOneById(req.flightId);
