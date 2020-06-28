@@ -66,7 +66,7 @@ public class EmployeeControllerTests {
             mvc.perform(post("/api/employees/add").contentType("application/json")
                     .content(json)
             ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
-                    .andExpect(content().string(containsString("success")));
+                    .andExpect(content().string(containsString("password")));
         } catch (Exception e) {
             e.printStackTrace();
         }
