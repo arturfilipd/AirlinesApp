@@ -15,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+/**
+ * Klasa mapująca usera
+ */
 @RestController
 public class UserController {
 
@@ -28,6 +31,10 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
+    /**
+     * Metoda zwracająca widok Thymeleaf
+     * @return Model widoku thymeleaf
+     */
     @RequestMapping(value = {"/thyme"})
     @ResponseBody
     public ModelAndView userlistePage() {

@@ -5,6 +5,9 @@ import lombok.Getter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Klasa modelująca lotnisko
+ */
 @Entity
 @Table(name = "Airports")
 public class Airport {
@@ -29,17 +32,35 @@ public class Airport {
     @Getter
     private String cityName;
 
+    /**
+     * Konstruktor
+     * @param name - nazwa
+     * @param code - kod lotniska
+     * @param cityName - nazwa miasta
+     */
     public Airport (String name, String code, String cityName){
         this.airportName = name;
         this.code = code;
         this.cityName = cityName;
     }
 
+    /**
+     * Konstruktor domyślny
+     */
     public Airport (){}
 
+    /**
+     * Getter ID
+     * @return id - id lotniska
+     */
     public Integer getId(){
         return id;
     }
+
+    /**
+     * Getter nazwy
+     * @return airportName - nazwa
+     */
     public String getName() {return airportName;}
 
 }

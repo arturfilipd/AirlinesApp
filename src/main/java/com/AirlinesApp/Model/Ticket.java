@@ -5,6 +5,9 @@ import lombok.Getter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Klasa modelująca bilet
+ */
 @Entity
 @Table(name = "Tickets")
 public class Ticket {
@@ -42,16 +45,35 @@ public class Ticket {
     @Getter
     private Flight flightID;
 
+    /**
+     * Getter flagi zapłaty
+     * @return paid - flaga
+     */
     public boolean getPaid(){
         return paid;
     }
 
+    /**
+     * Getter miejsca
+     * @return seat - miejsce
+     */
     public Integer getSeat() {
         return seat;
     }
 
+    /**
+     * Konstruktor domyślny
+     */
     public Ticket(){}
 
+    /**
+     * Konstruktor
+     * @param className - nazwa klasy
+     * @param clientID - ID klienta
+     * @param flightID - ID lotu
+     * @param paid - flaga zapłaty
+     * @param seat - miejsce
+     */
     public Ticket(String className, Client clientID, Flight flightID, boolean paid, Integer seat){
         this.className = className;
         this.clientID = clientID;

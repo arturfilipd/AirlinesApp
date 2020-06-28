@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Klasa modelująca klienta
+ */
 @Entity
 @Table(name = "Clients")
 public class Client {

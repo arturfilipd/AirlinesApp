@@ -5,6 +5,9 @@ import lombok.Getter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Klasa modelująca osobę
+ */
 @Entity
 @Table(name = "People")
 public class Person {
@@ -34,8 +37,18 @@ public class Person {
     @Getter
     private String phoneNumber;
 
+    /**
+     * Konstruktor domyślny
+     */
     public Person(){}
 
+    /**
+     * Konstruktor
+     * @param name - imię
+     * @param surname - nazwisko
+     * @param personalID - osobisty numer identyfikacyjny (np pesel)
+     * @param phoneNumber - numer telefonu
+     */
     public Person(String name, String surname, String personalID, String phoneNumber){
         this.name = name;
         this.surname = surname;

@@ -24,6 +24,10 @@ public class PersonController{
     @Autowired
     PersonRepository repository;
 
+    /**
+     * Mapowanie gettera wszystkich pracowników
+     * @return lista pracowników w formacie DTO
+     */
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<PersonDto> getEmployees() {

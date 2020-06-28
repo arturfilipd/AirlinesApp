@@ -5,6 +5,9 @@ import lombok.Getter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Klasa modelująca samolot
+ */
 @Entity
 @Table(name = "Planes")
 public class Plane {
@@ -28,16 +31,34 @@ public class Plane {
     @JoinColumn(name = "aPID", referencedColumnName = "id")
     @Getter private Airport aPID;
 
+    /**
+     * Konstruktor domyślny
+     */
     public Plane(){}
 
+    /**
+     * Getter miejsc ekonomicznych
+     * @return seatsInEconomic - miejsca w klasie ekonomicznej
+     */
     public Integer getSeatsInEconomic() {
         return seatsInEconomic;
     }
 
+    /**
+     * Getter miejsc biznesowych
+     * @return seatsInBuisness - miejsca w klasie biznesowej
+     */
     public Integer getSeatsInBuisness() {
         return seatsInBuisness;
     }
 
+    /**
+     * Konstruktor
+     * @param name - nazwa
+     * @param seatsInEconomic - miejsca w klasie ekonomicznej
+     * @param seatsInBuisness - miejsca w klasie biznesowej
+     * @param airport - lotnisko
+     */
     public Plane(String name, Integer seatsInEconomic, Integer seatsInBuisness, Airport airport){
         this.planeName = name;
         this.seatsInBuisness = seatsInBuisness;

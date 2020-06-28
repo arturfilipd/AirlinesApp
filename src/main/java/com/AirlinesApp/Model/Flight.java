@@ -5,6 +5,9 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Klasa modelująca lot
+ */
 @Entity
 @Table(name = "Flights")
 public class Flight {
@@ -45,12 +48,29 @@ public class Flight {
     @Getter
     private Plane planeID;
 
+    /**
+     * Getter samolotu
+     * @return planeID - samolot
+     */
     public Plane getPlaneID(){
         return planeID;
     }
 
+    /**
+     * Konstruktor domyślny
+     */
     public Flight(){}
 
+    /**
+     * Konstruktor
+     * @param starts - data startu
+     * @param ends - data lądowania
+     * @param source - lotnisko startu
+     * @param destination - lotnisko docelowe
+     * @param eco - cena za klasę ekonomiczną
+     * @param buis - cena za klasę biznesową
+     * @param plane - samolot
+     */
     public Flight(Date starts, Date ends, Airport source, Airport destination, Long eco, Long buis, Plane plane){
         this.startDate = starts;
         this.endDate = ends;
@@ -61,6 +81,10 @@ public class Flight {
         this.planeID = plane;
     }
 
+    /**
+     * toString
+     * @return toString
+     */
     @Override
     public String toString() {
         return "Flight{" +

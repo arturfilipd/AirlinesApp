@@ -75,6 +75,12 @@ public class AddAirportRequest {
         this.code = code;
     }
 
+    /**
+     * Konstruktor
+     * @param name - nazwa
+     * @param code - kod lotniska
+     * @param city - miasto
+     */
     public AddAirportRequest(String name, String code, String city) {
         this.name = name; this.code = code; this.city = city;
     }

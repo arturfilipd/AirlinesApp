@@ -47,6 +47,17 @@ public class AddEmployeeRequest {
      */
     public Set<String> role;
 
+    /**
+     * Konstruktor
+     * @param position - stanowisko
+     * @param salary - pensja
+     * @param name - imie
+     * @param surname - nazwisko
+     * @param personalID - osobisty numer identyfikacyjny  (np pesel)
+     * @param phoneNumber - numer telefonu
+     * @param eMail - email
+     * @param role - role użytkownicze
+     */
     public AddEmployeeRequest(String position, Long salary, String name, String surname, String personalID, String phoneNumber, String eMail, Set<String> role){
         this.position = position;
         this.salary = salary;

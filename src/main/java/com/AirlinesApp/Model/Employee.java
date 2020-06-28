@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-
+/**
+ * Klasa modelująca pracownika
+ */
 @Entity
 @Table(name = "Employees")
 public class Employee {
@@ -41,13 +43,29 @@ public class Employee {
     @Getter
     private String position;
 
+    /**
+     * Konstruktor domyślny
+     */
     public Employee(){}
+
+    /**
+     * Konstruktor
+     * @param person - Osoba
+     * @param salary - pensja
+     * @param hiringDate - data zatrudnienia
+     * @param position - stanowisko
+     */
     public Employee(Person person, Long salary, Date hiringDate, String position){
         this.personID = person;
         this.salary = salary;
         this.hiringDate = hiringDate;
         this.position = position;
     }
+
+    /**
+     * Getter osoby
+     * @return personID - osoba
+     */
     public Person getPersonID(){
         return personID;
     }
