@@ -2,7 +2,9 @@ package com.AirlinesApp.Security.oauth2;
 
 import com.AirlinesApp.Exception.OAuth2AuthenticationProcessingException;
 import com.AirlinesApp.Model.AuthProvider;
+import com.AirlinesApp.Model.Person;
 import com.AirlinesApp.Model.User;
+import com.AirlinesApp.Repository.PersonRepository;
 import com.AirlinesApp.Repository.UserRepository;
 import com.AirlinesApp.Security.UserPrincipal;
 import com.AirlinesApp.Security.oauth2.user.OAuth2UserInfo;
@@ -24,6 +26,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PersonRepository people;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -70,6 +75,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setUsername(oAuth2UserInfo.getUsername());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        String surname = "";
+        if(oAuth2UserInfo.getName().split("").length > 2) surname= oAuth2UserInfo.getName().split("")[1];
+        Person person = new Person(oAuth2UserInfo.getName().split("")[0], surname, oAuth2UserInfo.getId(), " ");
+        people.save(person);
         return userRepository.save(user);
     }
 

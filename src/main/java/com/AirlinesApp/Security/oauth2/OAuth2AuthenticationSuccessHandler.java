@@ -2,13 +2,17 @@ package com.AirlinesApp.Security.oauth2;
 
 import com.AirlinesApp.Configuration.AppProperties;
 import com.AirlinesApp.Exception.BadRequestException;
+import com.AirlinesApp.Model.User;
+import com.AirlinesApp.Repository.UserRepository;
 import com.AirlinesApp.Security.TokenProvider;
+import com.AirlinesApp.Security.jwt.JwtUtils;
 import com.AirlinesApp.Util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +32,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
+    @Autowired
+    JwtUtils utils;
+    @Autowired
+    UserRepository users;
 
     @Autowired
     OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties,
@@ -61,9 +69,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         String token = tokenProvider.createToken(authentication);
+        Long id = tokenProvider.getUserIdFromToken(token);
+        User u = users.findOneById(id);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
+                .queryParam("id", id)
+                .queryParam("username", u.getUsername())
+                .queryParam("email", u.getEmail())
                 .build().toUriString();
     }
 

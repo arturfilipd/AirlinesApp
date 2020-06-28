@@ -1,0 +1,57 @@
+AirlinesApp:
+  app:
+    jwtExpirationMs: 86400000
+    jwtSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpirationMsec: 864000000
+app:
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+      - myandroidapp://oauth2/redirect
+      - myiosapp://oauth2/redirect
+security:
+  require-ssl: true
+server:
+  port: 8443
+  ssl:
+    key-alias: tomcat
+    key-store: classpath:keystore.p12
+    key-store-password: password
+    key-store-type: PKCS12
+spring:
+  datasource:
+    data: classpath:/dataMain.sql
+    initialization-mode: always
+    password: qwerty
+    testWhileIdle: true
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_airlines?serverTimezone=UTC
+    username: springuser
+    validationQuery: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        provider:
+          facebook:
+            authorizationUri: https://www.facebook.com/v7.0/dialog/oauth
+            tokenUri: https://graph.facebook.com/v7.0/oauth/access_token
+            userInfoUri: https://graph.facebook.com/v7.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+        registration:
+          facebook:
+            clientId: 641522293101000
+            clientSecret: 4d68a3ee3e861dce375751f20683bae7
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
+  social:
+    facebook:
+      appId: 641522293101000
+      appSecret: 4d68a3ee3e861dce375751f20683bae7
