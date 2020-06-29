@@ -90,7 +90,7 @@ public class TicketController {
             tokenName= jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
         }
         if(users.findOneById(req.userId).getProvider() == AuthProvider.facebook){
-            tokenName= users.findOneById(oa2Utils.getUserIdFromToken(Authorization)).getUsername();
+            tokenName= users.findOneById(oa2Utils.getUserIdFromToken(Authorization.substring(7))).getUsername();
         }
 
         if(!tokenName.equals(users.findOneById(req.userId).getUsername())){
@@ -98,7 +98,6 @@ public class TicketController {
                     .badRequest()
                     .body(new MessageResponse("Error: Invalid user!"));
         }
-
         if(!flights.existsById(req.flightId)){
             return ResponseEntity
                     .badRequest()
@@ -126,7 +125,14 @@ public class TicketController {
                     .badRequest()
                     .body(new MessageResponse("Error: Ticket does not exist!"));
         }
-        String tokenName = jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        String tokenName = "";
+        AuthProvider prov =repository.findOneById(req.id).getClientID().getUserId().getProvider();
+        if(prov == AuthProvider.local){
+            tokenName= jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        }
+        if(prov == AuthProvider.facebook){
+            tokenName= users.findOneById(oa2Utils.getUserIdFromToken(Authorization.substring(7))).getUsername();
+        }
         String username = clients.findOneById(repository.findOneById(req.id).getClientID().getId()).getUserId().getUsername();
         if(!tokenName.equals(username)){
             return ResponseEntity
