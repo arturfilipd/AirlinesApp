@@ -163,7 +163,7 @@ public class TicketController {
             tokenName= jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
         }
         if(prov == AuthProvider.facebook){
-            tokenName= users.findOneById(oa2Utils.getUserIdFromToken(Authorization)).getUsername();
+            tokenName= users.findOneById(oa2Utils.getUserIdFromToken(Authorization.substring(7))).getUsername();
         }
         String username = repository.findOneById(req.ticketID).getClientID().getUserId().getUsername();
         if(!tokenName.equals(username)){
