@@ -1,5 +1,6 @@
 package com.AirlinesApp.Controller;
 
+import com.AirlinesApp.Model.AuthProvider;
 import com.AirlinesApp.Model.Ticket;
 import com.AirlinesApp.Model.User;
 import com.AirlinesApp.Payload.Request.Tickets.AddTicketRequest;
@@ -11,6 +12,7 @@ import com.AirlinesApp.Repository.ClientRepository;
 import com.AirlinesApp.Repository.FlightRepository;
 import com.AirlinesApp.Repository.TicketRepository;
 import com.AirlinesApp.Repository.UserRepository;
+import com.AirlinesApp.Security.TokenProvider;
 import com.AirlinesApp.Security.jwt.JwtUtils;
 import com.AirlinesApp.Transformer.TicketTransformer;
 import com.AirlinesApp.dto.TicketDto;
@@ -40,6 +42,7 @@ public class TicketController {
     @Autowired FlightRepository flights;
 
     @Autowired JwtUtils jwtUtils;
+    @Autowired TokenProvider oa2Utils;
 
     /**
      * Mapowanie wyswietlania biletow danego klienta
@@ -82,8 +85,14 @@ public class TicketController {
                   .badRequest()
                   .body(new MessageResponse("Error: Invalid user!"));
       }
+        String tokenName = "";
+        if(users.findOneById(req.userId).getProvider() == AuthProvider.local){
+            tokenName= jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        }
+        if(users.findOneById(req.userId).getProvider() == AuthProvider.facebook){
+            tokenName= users.findOneById(oa2Utils.getUserIdFromToken(Authorization)).getUsername();
+        }
 
-        String tokenName = jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
         if(!tokenName.equals(users.findOneById(req.userId).getUsername())){
             return ResponseEntity
                     .badRequest()
@@ -142,7 +151,14 @@ public class TicketController {
         if(!repository.existsById(req.ticketID)){
             ResponseEntity.badRequest().body(new MessageResponse("Error: Ticket does not exist!"));
         }
-        String tokenName = jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        AuthProvider prov = repository.findOneById(req.ticketID).getClientID().getUserId().getProvider();
+        String tokenName = "";
+        if(prov == AuthProvider.local){
+            tokenName= jwtUtils.getUserNameFromJwtToken(Authorization.substring(7));
+        }
+        if(prov == AuthProvider.facebook){
+            tokenName= users.findOneById(oa2Utils.getUserIdFromToken(Authorization)).getUsername();
+        }
         String username = repository.findOneById(req.ticketID).getClientID().getUserId().getUsername();
         if(!tokenName.equals(username)){
             return ResponseEntity
