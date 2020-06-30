@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 public class AuthControllerTest {
     @Autowired
@@ -89,7 +89,7 @@ public class AuthControllerTest {
     public void signInEmailError(){
         String json = "{\n" +
                 "    \"username\": \"testuser3\",\n" +
-                "    \"email\": \"employee@oftheyear.com\",\n" +
+                "    \"email\": \"employee@oftheyear.com2\",\n" +
                 "    \"password\": \"qwerty\",\n" +
                 "    \"role\": [\"user\"],\n" +
                 "    \"name\": \"Franek\",\n" +

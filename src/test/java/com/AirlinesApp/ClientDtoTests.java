@@ -12,9 +12,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:application-test.properties")
-@RunWith(SpringRunner.class)
-@AutoConfigureMockMvc
+//@RunWith(SpringRunner.class)
 public class ClientDtoTests {
     private final static Integer ID = 0;
     private Person PERSON = new Person();

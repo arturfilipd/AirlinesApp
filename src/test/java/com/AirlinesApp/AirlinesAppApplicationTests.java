@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 class AirlinesAppApplicationTests {
     @Autowired
