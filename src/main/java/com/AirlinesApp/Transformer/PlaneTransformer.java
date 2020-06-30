@@ -10,9 +10,4 @@ public class PlaneTransformer {
         BeanUtils.copyProperties(plane, planeDto);
         return planeDto;
     }
-    public static Plane convertToEntity(PlaneDto planeDto){
-        Plane plane = new Plane();
-        BeanUtils.copyProperties(planeDto, plane);
-        return plane;
-    }
 }

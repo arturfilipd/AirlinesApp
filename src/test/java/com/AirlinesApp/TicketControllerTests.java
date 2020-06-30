@@ -31,6 +31,7 @@ public class TicketControllerTests {
     MockMvc mvc;
     @Autowired
     TestUtils utils;
+
     @Before
     public void setup() {
         mvc = MockMvcBuilders
@@ -38,9 +39,10 @@ public class TicketControllerTests {
                 .apply(springSecurity())
                 .build();
     }
+
     @WithUserDetails("szef")
     @Test
-    public void addTicketTest() throws Exception{
+    public void addTicketTest() throws Exception {
         String json = "{" +
                 "\"flightId\":\"100\",\n" +
                 "\"userId\":\"91\",\n" +
@@ -52,9 +54,10 @@ public class TicketControllerTests {
         ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                 .andExpect(content().string(containsString("success")));
     }
+
     @WithUserDetails("szef")
     @Test
-    public void addTicketIvalidFlightTest() throws Exception{
+    public void addTicketIvalidFlightTest() throws Exception {
         String json = "{" +
                 "\"flightId\":\"-1\",\n" +
                 "\"userId\":\"1\",\n" +
@@ -66,9 +69,10 @@ public class TicketControllerTests {
         ).andDo(print()).andExpect(status().isBadRequest()).andExpect(content().contentType("application/json"))
                 .andExpect(content().string(containsString("Error: No such flight!")));
     }
+
     @WithUserDetails("szef")
     @Test
-    public void failureAddTicketTest() throws Exception{
+    public void failureAddTicketTest() throws Exception {
         String json = "{" +
                 "\"flightId\":\"0\",\n" +
                 "\"userId\":\"-1\",\n" +
@@ -80,9 +84,10 @@ public class TicketControllerTests {
         ).andDo(print()).andExpect(status().isBadRequest()).andExpect(content().contentType("application/json"))
                 .andExpect(content().string(containsString("Error")));
     }
+
     @WithUserDetails("szef")
     @Test
-    public void checkInTicketTest() throws Exception{
+    public void checkInTicketTest() throws Exception {
         String json = "{" +
                 "\"ticketID\":\"101\",\n" +
                 "\"seat\":\"22\"\n" +
@@ -94,18 +99,20 @@ public class TicketControllerTests {
         ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                 .andExpect(content().string(containsString("success")));
     }
+
     @WithUserDetails("szef")
     @Test
-    public void cancelTicketTest() throws Exception{
+    public void cancelTicketTest() throws Exception {
         String json = "{\"id\":\"100\"}";
         mvc.perform(delete("/api/tickets/delete").contentType("application/json")
                 .content(json).header("Authorization", utils.getUserToken("szef", "qwerty"))
         ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                 .andExpect(content().string(containsString("success")));
     }
+
     @WithUserDetails("szef")
     @Test
-    public void failureCancelTicketTest() throws Exception{
+    public void failureCancelTicketTest() throws Exception {
         String json = "{\"id\":\"-1\"}";
         mvc.perform(delete("/api/tickets/delete").contentType("application/json")
                 .content(json).header("Authorization", utils.getUserToken("szef", "qwerty"))
@@ -113,4 +120,28 @@ public class TicketControllerTests {
                 .andExpect(content().string(containsString("Error")));
     }
 
+    @WithUserDetails("szef")
+    @Test
+    public void listTicketsByClientIDTest() {
+        String json = "{\"userID\":\"91\"}";
+        try {
+            mvc.perform(post("/api/tickets/listByClientID").contentType("application/json").content(json))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json")).andExpect(content().string(containsString("id")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @WithUserDetails("szef")
+    @Test
+    public void failureListTicketsByClientIDTest() {
+        String json = "{\"userID\":\"3\"}";
+        try {
+            mvc.perform(post("/api/tickets/listByClientID").contentType("application/json").content(json))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json")).andExpect(content().string(containsString("")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -10,9 +10,4 @@ public class PersonTransformer {
         BeanUtils.copyProperties(person, personDto);
         return personDto;
     }
-    /*public static Person convertToEntity(PersonDto personDto){
-        Person person = new Person();
-        BeanUtils.copyProperties(personDto, person);
-        return person;
-    }*/
 }

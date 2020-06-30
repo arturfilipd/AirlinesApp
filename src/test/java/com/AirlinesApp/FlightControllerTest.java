@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -29,6 +30,7 @@ public class FlightControllerTest {
     private WebApplicationContext context;
     @Autowired
     private MockMvc mvc;
+
     @Before
     public void setup() {
         mvc = MockMvcBuilders
@@ -38,7 +40,7 @@ public class FlightControllerTest {
 
     @Test
     @WithUserDetails("szef")
-    public void addFlight(){
+    public void addFlight() {
         String json = "{\n" +
                 "\"starts\": \"2020-06-22T00:00:00.000+00:00\",\n" +
                 "\"ends\":  \"2020-07-23T00:00:00.000+00:00\",\n" +
@@ -57,9 +59,10 @@ public class FlightControllerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     @WithUserDetails("szef")
-    public void addFlightInvalidDest(){
+    public void addFlightInvalidDest() {
         String json = "{\n" +
                 "\"starts\": \"2020-06-22T00:00:00.000+00:00\",\n" +
                 "\"ends\":  \"2020-07-23T00:00:00.000+00:00\",\n" +
@@ -78,9 +81,10 @@ public class FlightControllerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     @WithUserDetails("szef")
-    public void addFlightInvalidSrc(){
+    public void addFlightInvalidSrc() {
         String json = "{\n" +
                 "\"starts\": \"2020-06-22T00:00:00.000+00:00\",\n" +
                 "\"ends\":  \"2020-07-23T00:00:00.000+00:00\",\n" +
@@ -99,9 +103,10 @@ public class FlightControllerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     @WithUserDetails("szef")
-    public void addFlightInvalidPlane(){
+    public void addFlightInvalidPlane() {
         String json = "{\n" +
                 "\"starts\": \"2020-06-22T00:00:00.000+00:00\",\n" +
                 "\"ends\":  \"2020-07-23T00:00:00.000+00:00\",\n" +
@@ -120,9 +125,10 @@ public class FlightControllerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     @WithUserDetails("szef")
-    public void delete(){
+    public void delete() {
         String json = "{\n" +
                 "\"id\": 222\n" +
                 "}";
@@ -135,9 +141,10 @@ public class FlightControllerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     @WithUserDetails("szef")
-    public void deleteInvalid(){
+    public void deleteInvalid() {
         String json = "{\n" +
                 "\"id\": -1\n" +
                 "}";
@@ -153,7 +160,7 @@ public class FlightControllerTest {
 
     @Test
     @WithUserDetails("szef")
-    public void edit(){
+    public void edit() {
         String json = "{\n" +
                 "\"id\": 111,\n" +
                 "\"newStart\": \"2020-01-21\",\n" +
@@ -171,7 +178,7 @@ public class FlightControllerTest {
 
     @Test
     @WithUserDetails("szef")
-    public void editInvalidFlight(){
+    public void editInvalidFlight() {
         String json = "{\n" +
                 "\"id\": -1,\n" +
                 "\"newStart\": \"2020-06-22T00:00:00.000+00:00\",\n" +
@@ -186,9 +193,10 @@ public class FlightControllerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     @WithUserDetails("szef")
-    public void editInvalidEndDate(){
+    public void editInvalidEndDate() {
         String json = "{\n" +
                 "\"id\": 111,\n" +
                 "\"newStart\": \"2020-06-22T00:00:00.000+00:00\"\n" +
@@ -203,4 +211,41 @@ public class FlightControllerTest {
         }
     }
 
+    @WithUserDetails("szef")
+    @Test
+    public void listFlights() {
+        try {
+            mvc.perform(get("/api/flights/list"))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json")).andExpect(content().string(containsString("id")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @WithUserDetails("szef")
+    @Test
+    public void getFreeSeatsTest(){
+        String json = "{\"flightId\":\"100\",\"className\":\"biz\"}";
+        try {
+            mvc.perform(post("/api/flights/getFreeSeats").contentType("application/json")
+                    .content(json))
+                    .andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
+                    .andExpect(content().string(containsString("0")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @WithUserDetails("szef")
+    @Test
+    public void failureGetFreeSeatsTest(){
+        String json = "{\"flightId\":\"-1\",\"className\":\"biz\"}";
+        try {
+            mvc.perform(post("/api/flights/getFreeSeats").contentType("application/json")
+                    .content(json))
+                    .andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
+                    .andExpect(content().string(containsString("-1")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

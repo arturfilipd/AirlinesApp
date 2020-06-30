@@ -15,4 +15,15 @@ public class EmployeeDto {
     @Getter @Setter private Date hiringDate;
     @Getter @Setter private Date firingDate;
     @Getter @Setter private String position;
+
+    public EmployeeDto() {}
+
+    public EmployeeDto(Integer id, Person personID, Long salary, Date hiringDate, Date firingDate, String position) {
+        this.id = id;
+        this.personID = personID;
+        this.salary = salary;
+        this.hiringDate = hiringDate;
+        this.firingDate = firingDate;
+        this.position = position;
+    }
 }

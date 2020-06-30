@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,6 +53,17 @@ public class AirportControllerTests {
             ).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/json"))
                     .andExpect(content().string(containsString("success")));
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @WithUserDetails("szef")
+    @Test
+    public void listAirportsTest(){
+        try{
+            mvc.perform(get("/api/airports/list"))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json")).andExpect(content().string(containsString("id")));
+        } catch(Exception e){
             e.printStackTrace();
         }
     }

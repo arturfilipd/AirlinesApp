@@ -15,4 +15,16 @@ public class TicketDto {
     @Setter private boolean paid;
     @Getter @Setter private Client clientID;
     @Getter @Setter private Flight flightID;
+
+    public TicketDto() {}
+
+    public TicketDto(Integer id, String className, Long price, Integer seat, boolean paid, Client clientID, Flight flightID) {
+        this.id = id;
+        this.className = className;
+        this.price = price;
+        this.seat = seat;
+        this.paid = paid;
+        this.clientID = clientID;
+        this.flightID = flightID;
+    }
 }

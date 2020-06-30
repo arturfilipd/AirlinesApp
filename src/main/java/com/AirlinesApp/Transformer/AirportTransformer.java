@@ -10,9 +10,4 @@ public class AirportTransformer {
         BeanUtils.copyProperties(airport, airportDto);
         return airportDto;
     }
-    public static Airport convertToEntity(AirportDto airportDto){
-        Airport airport = new Airport();
-        BeanUtils.copyProperties(airportDto, airport);
-        return airport;
-    }
 }

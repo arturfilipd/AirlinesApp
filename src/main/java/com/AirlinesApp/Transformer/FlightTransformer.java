@@ -10,9 +10,4 @@ public class FlightTransformer {
         BeanUtils.copyProperties(flight, flightDto);
         return flightDto;
     }
-    public static Flight convertToEntity(FlightDto flightDto){
-        Flight flight = new Flight();
-        BeanUtils.copyProperties(flightDto, flight);
-        return flight;
-    }
 }

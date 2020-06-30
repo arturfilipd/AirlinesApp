@@ -19,4 +19,16 @@ public class FlightDto {
     @Getter @Setter private Airport dAPID;
     @Getter @Setter private Plane planeID;
 
+    public FlightDto() {}
+
+    public FlightDto(Integer id, Long priceEconomic, Date startDate, Date endDate, Long priceBuisness, Airport sAPID, Airport dAPID, Plane planeID) {
+        this.id = id;
+        this.priceEconomic = priceEconomic;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.priceBuisness = priceBuisness;
+        this.sAPID = sAPID;
+        this.dAPID = dAPID;
+        this.planeID = planeID;
+    }
 }

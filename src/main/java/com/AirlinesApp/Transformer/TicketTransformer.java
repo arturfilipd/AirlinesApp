@@ -10,9 +10,4 @@ public class TicketTransformer {
         BeanUtils.copyProperties(ticket, ticketDto);
         return ticketDto;
     }
-    public static Ticket convertToEntity(TicketDto ticketDto){
-        Ticket ticket = new Ticket();
-        BeanUtils.copyProperties(ticketDto, ticket);
-        return ticket;
-    }
 }

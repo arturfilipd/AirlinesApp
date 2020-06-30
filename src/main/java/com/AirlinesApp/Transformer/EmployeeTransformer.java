@@ -10,9 +10,4 @@ public class EmployeeTransformer{
         BeanUtils.copyProperties(employee, employeeDto);
         return employeeDto;
     }
-    public static Employee convertToEntity(EmployeeDto employeeDto){
-        Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDto, employee);
-        return employee;
-    }
 }
