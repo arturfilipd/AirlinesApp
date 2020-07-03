@@ -116,11 +116,15 @@ public class EmployeeController {
         }
         Person p = people.save(new Person(req.name, req.surname, req.personalID, req.phoneNumber));
         repository.save(new Employee(p, req.salary, new Date(), req.position));
-        User user = new User(req.eMail, req.eMail, encoder.encode(pass));
+        String username = "emp" + repository.getAllEmployees().size();
+        for(int i=0;i<8;i++){
+            username+=alphabet.charAt(rand.nextInt(alphabet.length()));
+        }
+        User user = new User(username, req.eMail, encoder.encode(pass));
         user.setPersonID(p);
         user.setRoles(roles);
         users.save(user);
-        return ResponseEntity.ok(new NewEmployeeResponse(req.eMail, pass));
+        return ResponseEntity.ok(new NewEmployeeResponse(username, pass));
     }
 
     /**

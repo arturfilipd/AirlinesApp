@@ -42,7 +42,6 @@ insert into Roles values(2, 'ROLE_EMPLOYEE');
 insert into Roles values(3, 'ROLE_MANAGER');
 
 insert into User_roles values(1, 3);
-insert into User_roles values(1, 1);
 insert into User_roles values(2, 2);
 insert into User_roles values(2, 1);
 insert into User_roles values(3, 1);
